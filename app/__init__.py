@@ -10,3 +10,5 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 import routes, models
+
+models.Group.query.order_by(models.Group.username).all()
