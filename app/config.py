@@ -11,5 +11,5 @@ class Config(object):
 class DevConfig(object):
     DEBUG = True
     RELOAD = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'dev.db')
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://asimov:asimov@localhost/asimov?host=localhost?port=3306"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
