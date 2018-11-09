@@ -11,5 +11,5 @@ class Config(object):
 class DevConfig(object):
     DEBUG = True
     RELOAD = True
-    SQLALCHEMY_DATABASE_URI = "mysql://asimov:asimov@localhost/asimov"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://asimov:asimov@devostrum.no-ip.info/asimov"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
