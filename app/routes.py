@@ -12,9 +12,10 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     from datetime import datetime
-    print(request.form.get('password'))
+
     if request.method == 'GET':
 	    return render_template('login.html', year = datetime.now().year)
+
     username = request.form.get('username')
     password = request.form.get('password')
 
@@ -22,14 +23,15 @@ def login():
     
     if group:
         if bcrypt.check_password_hash(group.password_hash, password):
-
             login_user(group)
             flash('Login Successful')
             return redirect('/' + group.username)
+
     flash('Invalid username or password')
     return render_template('login.html', year = datetime.now().year)
 
 @app.route('/<username>', methods=['GET'])
+@login_required
 def group_dashboard(username):
     return render_template('index.html')
 
