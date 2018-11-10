@@ -24,5 +24,5 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(username):
-    group = models.Group.query.filter(username=username).first()
+    group = models.Group.query.filter_by(username=username).first()
     return group

@@ -21,11 +21,11 @@ def login():
     group = Group.query.filter_by(username=username).first()
     
     if group:
-        if bcrypt.check_password_hash(group['password'], password):
+        if bcrypt.check_password_hash(group.password_hash, password):
 
             login_user(group)
-            flask.flash('Login Successful')
-            return redirect('/'+group['username'])
+            flash('Login Successful')
+            return redirect('/' + group.username)
     flash('Invalid username or password')
     return render_template('login.html', year = datetime.now().year)
 
