@@ -64,11 +64,26 @@ def register():
     # flash('Sign up successful.')
     # return render_template('register.html')
 
+@app.route('/logout', methods=['GET'])
+@login_required
+def logout():
+    logout_user()
+    return redirect('/')
+
 @app.route('/dashboard', methods=['GET'])
 @login_required
-def group_dashboard():
+def admin_dashboard():
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():
         return render_template('admin-dashboard.html')
-    
-    return render_template('dashboard.html')
+    else:
+        return redirect('/student-dashboard/' + group.username)
+
+@app.route('/student-dashboard/<username>', methods=['GET'])
+@login_required
+def student_dashboard(username):
+    group = Group.query.get(int(current_user.get_id()))
+    if group.is_admin() or group.username == username:
+        return render_template('dashboard.html')
+    else:
+        return redirect('/student-dashboard/' + group.username)
