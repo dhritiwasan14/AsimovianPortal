@@ -9,10 +9,11 @@ import config
 app = Flask(__name__)
 app.config.from_object(config.DevConfig)
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 
 import routes, models
+
+migrate = Migrate(app, db)
 
 models.Group.query.order_by(models.Group.username).all()
 

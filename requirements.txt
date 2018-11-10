@@ -1,3 +1,5 @@
 flask_sqlalchemy
 flask-migrate
 pymysql
+flask_login
+flask_bcrypt
