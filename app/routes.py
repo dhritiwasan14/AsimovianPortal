@@ -25,15 +25,10 @@ def login():
         if bcrypt.check_password_hash(group.password_hash, password):
             login_user(group)
             flash('Login Successful')
-            return redirect('/' + group.username)
+            return redirect('/dashboard')
 
     flash('Invalid username or password')
     return render_template('login.html', year = datetime.now().year)
-
-@app.route('/<username>', methods=['GET'])
-@login_required
-def group_dashboard(username):
-    return render_template('index.html')
 
 @app.route('/register', methods=['GET'])
 def register():
@@ -68,3 +63,12 @@ def register():
     # db.session.commit()
     # flash('Sign up successful.')
     # return render_template('register.html')
+
+@app.route('/dashboard', methods=['GET'])
+@login_required
+def group_dashboard():
+    group = Group.query.get(int(current_user.get_id()))
+    if group.is_admin():
+        return render_template('admin-dashboard.html')
+    
+    return render_template('dashboard.html')
