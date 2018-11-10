@@ -8,6 +8,8 @@ import config
 
 app = Flask(__name__)
 app.config.from_object(config.DevConfig)
+app.secret_key = config.Config.SECRET_KEY
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 

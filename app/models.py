@@ -10,9 +10,10 @@ class Group(db.Model, UserMixin):
     pages = db.relationship('Page', backref='user', lazy=True)
     # authenticated = db.Column(db.Boolean, default=False)
 
-    def __init__(self, username, password):
+    def __init__(self, username, password_hash, admin):
         self.username = username
-        self.password_hash = password
+        self.password_hash = password_hash
+        self.admin = admin
  
     # def is_authenticated(self):
     #     return self.authenticated
@@ -27,7 +28,7 @@ class Group(db.Model, UserMixin):
         return unicode(self.id)
 
     def is_admin(self):
-        return self.is_admin
+        return self.admin
  
     def __repr__(self):
         return '<Group %r>' % (self.username)
