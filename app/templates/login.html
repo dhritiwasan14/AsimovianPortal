@@ -12,6 +12,11 @@
     	html,
 		body {
 		  height: 100%;
+			width: 100%;
+			background-image: url('/static/img/Artboard\ 1.png');
+			background-size:cover;
+			opacity: 0.9;
+			background-repeat: no-repeat;
 		}
 
 		body {
@@ -32,7 +37,7 @@
 		.form-signin input[type="username"], input[type="password"], button, div {
 		  width: 100%;
 		  margin: 0 auto;
-		  max-width: 330px;
+		  max-width: 500px;
 		}
 
 		.form-signin .checkbox {
@@ -58,12 +63,35 @@
 		  border-top-left-radius: 0;
 		  border-top-right-radius: 0;
 		}
+		.btn {
+			border-color: white;
+			background-color: transparent;
+			color: white;
+		}
+		.btn:hover{
+			border-color: transparent;
+			background-color: white;
+			color: black;
+		}
+		form {
+			position: fixed;
+			left: 10em;
+			top: 10em;
+			width: 30em;
+		}
+		.turn-white{
+			color: white;
+		}
+		.quote {
+			font-family:'Courier New', Courier, monospace; 
+			font-weight: bold;
+		}
     </style>
   </head>
   <body class="text-center">
     <form class="form-signin" action="/login" method="POST">
-      <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <!-- <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
+      <h1 class="h3 mb-3 turn-white quote">"Those who think they know everything are a great annoyance to those of us who do." - Asimov</h1>
 
 		{% with messages = get_flashed_messages() %}
 			{% if messages %}
@@ -76,15 +104,15 @@
 			{% endif %}
 		{% endwith %}
       <label for="inputUsername" class="sr-only">Username</label>
-      <input type="username" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
+      <input type="username" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus><br>
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
-      <div class="checkbox mb-3">
+      <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required><br>
+      <div class="checkbox mb-3 turn-white">
         <label>
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <button class="btn btn-lg" type="submit">Sign in</button>
       <p class="mt-5 mb-3 text-muted">&copy; {{ year }} -  Singapore University of Technology and Design</p>
     </form>
 

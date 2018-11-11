@@ -53,16 +53,7 @@ def register():
         message = "Admin account exists already!"
 
     return render_template('register.html', message = message, year = datetime.now().year)
-    # if request.method == 'GET':
-    #     return render_template('register.html')
-    # username = request.form.get('username')
-    # password = request.form.get('password')
-    # pw_hash = bcrypt.generate_password_hash(password)
-    # group = Group(username=username, password_hash=pw_hash)
-    # db.session.add(group)
-    # db.session.commit()
-    # flash('Sign up successful.')
-    # return render_template('register.html')
+
 
 @app.route('/dashboard', methods=['GET'])
 @login_required
