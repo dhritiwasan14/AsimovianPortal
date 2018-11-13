@@ -87,6 +87,8 @@ nav {
 }
 .navbar-brand{
     margin: 5px 16px 8px 16px !important;
+    font-family: 'Athiti';
+    font-size: 24px;
 }
 
 #navUserDropdown {
@@ -137,4 +139,9 @@ nav {
 	font-size: 38px;
 	font-family: 'Roboto';
 	font-weight: 300;
+}
+
+#pagPageEdit {
+	overflow-y: auto;
+	overflow-x: hidden;
 }
