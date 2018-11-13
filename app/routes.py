@@ -73,8 +73,17 @@ def admin_dashboard():
 @app.route('/student-dashboard/<username>', methods=['GET'])
 @login_required
 def student_dashboard(username):
+    # add post, redirect to 
+    # click existing post, 
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin() or group.username == username:
         return render_template('dashboard.html')
     else:
         return redirect('/student-dashboard/' + group.username)
+
+
+
+# @app.route('/student-editor/<username>/<page>', methods=['GET', 'POST'])
+# @login_required
+# def student_editor(username, page):
+#     image = request.form.get('')

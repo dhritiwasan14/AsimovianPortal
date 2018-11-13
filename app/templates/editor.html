@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Realtime Markdown Viewer</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/editor-styles.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+</head>
+
+<body class="container-fluid">
+    <div class="upload-image">
+        <input class="image" type="file" id="myFile" accept=".jpg,.png,.jpeg,.bmp">
+    </div>
+    <section class="row">
+        <textarea class="col-md-6 full-height" id="pad">Write your text here..</textarea>
+        <div class="col-md-6 full-height" id="markdown"></div>
+    </section>
+
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.2/dist/showdown.min.js"></script>
+    <script src="../static/js/editor-scripts.js"></script>
+    
+</body>
+</html>
