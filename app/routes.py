@@ -3,7 +3,7 @@ from models import Group, Page
 
 from flask import render_template, request, redirect, flash
 from flask_login import login_user, login_required, logout_user, current_user
-
+import hashlib
 
 @app.route('/')
 def index():
@@ -76,7 +76,7 @@ def student_dashboard(username):
     # click existing post, 
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin() or group.username == username:
-        return render_template('student-dashboard.html', username = username)
+        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username))
     else:
         return redirect('/student-dashboard/' + group.username)
 

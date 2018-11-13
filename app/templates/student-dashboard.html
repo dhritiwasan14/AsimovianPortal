@@ -26,7 +26,7 @@
 		    <ul class="navbar-nav my-2 my-lg-0" id="navUserDropdown">
 		      <li class="nav-item dropdown"">
 		        <a class="nav-link" href="#" id="navUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		        	<img src="/static/img/profile-sample.png" id="imgUserProfile"> &nbsp;&nbsp;
+		        	<img src="https://www.gravatar.com/avatar/{{ usernameHash }}?d=identicon" id="imgUserProfile"> &nbsp;&nbsp;
 		          {{ username }}
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navUser">
@@ -120,10 +120,8 @@
        		// Function that loads the appropriate event when selected and updates the UI to reflect it
 		function select(pane) {
 			$("#nav" + selected).removeClass('selected'); // "De-select" the row of the previously selected event
-			$("#nav" + selected).find(".nav-item-icon").attr('src', '/static/img/' + selected.toLowerCase() + '-24px.png');
 			selected = pane; // Set the selected event to the event that was clicked
 			$("#nav" + pane).addClass('selected'); // "Select" the row of the clicked event
-			$("#nav" + selected).find(".nav-item-icon").attr('src', '/static/img/selected-' + selected.toLowerCase() + '-24px.png');
 			// Load the event data into the page
 			loadPane('pan' + pane);
 		}
@@ -157,7 +155,8 @@
 		}
 		
 		function savePage() {
-
+			// POST page data to backend
+			// Reload page list table
 		}
 
 		// Set up event listener for when the DOM is fully loaded

@@ -105,6 +105,13 @@ nav {
 	font-weight: bold;
 }
 
+#imgUserProfile {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+}
 .sliding-content {
     position: relative;
     overflow: hidden;
