@@ -24,6 +24,7 @@ def login():
     if group:
         if bcrypt.check_password_hash(group.password_hash, password):
             login_user(group)
+            flash('Login Successful')
             return redirect('/dashboard')
 
     flash('Invalid username or password')
@@ -60,9 +61,14 @@ def logout():
     logout_user()
     return redirect('/')
 
-@app.route('/dashboard', methods=['GET'])
+@app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def admin_dashboard():
+    if request.method == 'POST':
+        if request.form.get('file'):
+            file_upload = request.form.get('file')
+            print (file_upload)
+
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():
         return render_template('admin-dashboard.html')
@@ -76,7 +82,7 @@ def student_dashboard(username):
     # click existing post, 
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin() or group.username == username:
-        return render_template('student-dashboard.html', username = username)
+        return render_template('dashboard.html')
     else:
         return redirect('/student-dashboard/' + group.username)
 
@@ -85,4 +91,5 @@ def student_dashboard(username):
 # @app.route('/student-editor/<username>/<page>', methods=['GET', 'POST'])
 # @login_required
 # def student_editor(username, page):
+#     # handle post request for image upload, save as draft, prompt save. 
 #     image = request.form.get('')
