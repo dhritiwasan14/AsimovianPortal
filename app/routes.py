@@ -24,7 +24,6 @@ def login():
     if group:
         if bcrypt.check_password_hash(group.password_hash, password):
             login_user(group)
-            flash('Login Successful')
             return redirect('/dashboard')
 
     flash('Invalid username or password')
@@ -77,7 +76,7 @@ def student_dashboard(username):
     # click existing post, 
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin() or group.username == username:
-        return render_template('dashboard.html')
+        return render_template('student-dashboard.html', username = username)
     else:
         return redirect('/student-dashboard/' + group.username)
 
