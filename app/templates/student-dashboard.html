@@ -48,16 +48,16 @@
 				</div>
 			</div>
 			<!-- Begin main detail view -->
-			<div class="col-md-10 col-xs-8 scrollable" style="z-index: -100; background: #F6F6F8;">
+			<div class="col-md-10 col-xs-8 scrollable" style="z-index: 1; background: #F6F6F8;">
 				<div id="panDashboard" class="pane">
 					<div class="sliding-content">
-						<div id="pagPageList">
+						<div id="pagPageList" style="position: relative; z-index: 1;">
 							<div class="row">
 								<div class="col-md-10">
 									<h1>Pages</h1>
 								</div>
 								<div class="col-md-2">
-									<button class="float-right h4 btn btn-primary" id="btnAddPage" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Page</button>
+									<button class="btn btn-primary float-right h4" id="btnAddPage" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Page</button>
 								</div>
 							</div>
 							<br>
@@ -91,8 +91,17 @@
 								</div>
 							</div>
 						</div>
-						<div class="row" id="pagPageEdit">
-							<h1>Page Edit</h1>
+						<div id="pagPageEdit" style="position: relative; left: 500vh; top: -27.75vh;">
+  							<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
+  								<div class="col-md-1">
+									<div id="btnBack" data-toggle="tooltip" data-placement="left" data-original-title="Back">
+										<p class="plus"><i class="material-icons">arrow_back</i></p>
+		  							</div>
+  								</div>
+  								<div class="col-md-11">
+									<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Page</h1>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -123,7 +132,34 @@
 			$(".pane").hide();
 			$("#" + paneId).show();
 		}
+
+		function clickPageName(e) {
+			var editableText = $("<input type=\"text\" name=\"edtPageName\" id=\"txtPageName\" class=\"form-control\"  style=\"line-height: 55px; height: 55px; vertical-align: middle; font-size:24px;\">");
+			var original = $(this);
+			editableText.val($(this).html())
+			$(this).replaceWith(editableText);
+			editableText.focus();
+			editableText.keypress(function(e) {
+				if(e.keyCode == 13) {
+					original.html($(this).val());
+					$(this).replaceWith(original);
+					$(this).val("");
+
+					savePage();
+
+					original.click(clickPageName);
+
+					return false;
+				}
+
+				return true;
+			});
+		}
 		
+		function savePage() {
+
+		}
+
 		// Set up event listener for when the DOM is fully loaded
 		$(document).ready(function() {
 			// Select the provided event, or the first event as appropriate
@@ -134,13 +170,18 @@
 			});
 
 			$("#btnAddPage").click(function(e) {
-				$("#pagPageList").animate({
-					'marginRight': '+=100vh'
-				});
-				$("#pagPageEdit").animate({
-					'marginLeft': '-=100vh'
+				$("#pagPageList, #pagPageEdit").animate({
+					'left': '-=500vh'
 				});
 			});
+			$("#btnBack").click(function(e) {
+				savePage();
+				$("#pagPageList, #pagPageEdit").animate({
+					'left': '+=500vh'
+				});
+			});
+
+			$("#txtPageName").click(clickPageName);
 		});
 	</script>
 </body>

@@ -31,6 +31,7 @@ html, body {
 
 #side-nav-container {
 	box-shadow: 2px 6px 10px #CCCCCC;
+	z-index: 8;
 }
 #side-nav-table {
 	margin-top: 5vh;
@@ -78,6 +79,7 @@ html, body {
 nav {
 	padding: 0;
 	margin: 0;
+	z-index: 10;
 }
 
 .navbar {
@@ -106,5 +108,26 @@ nav {
 .sliding-content {
     position: relative;
     overflow: hidden;
-    height: 100%;
+}
+
+#btnBack {
+  width: 55px;
+  height: 55px;
+  //margin: 0.5vh;
+  border-radius: 50%;
+  //background: #db4437;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0px 2px 5px #666;
+}
+
+.plus {
+	color: #666666;
+	text-align: center;
+	padding: 0;
+	margin: ;
+	line-height: 55px;
+	font-size: 38px;
+	font-family: 'Roboto';
+	font-weight: 300;
 }
