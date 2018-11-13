@@ -31,6 +31,7 @@ html, body {
 
 #side-nav-container {
 	box-shadow: 2px 6px 10px #CCCCCC;
+	z-index: 8;
 }
 #side-nav-table {
 	margin-top: 5vh;
@@ -67,17 +68,19 @@ html, body {
 }
 
 .pane {
-	padding: 4vh;
+	padding: 2vh 3vh 2vh 3vh;
 	background-color: white;
 	z-index: 2;
 	margin: 2vh;
-	height: 86.5%;
+	height: 89%;
 	box-shadow: 2px 6px 10px #CCCCCC;
 }
 
 nav {
 	padding: 0;
 	margin: 0;
+	z-index: 10;
+	height: 7vh;
 }
 
 .navbar {
@@ -85,6 +88,8 @@ nav {
 }
 .navbar-brand{
     margin: 5px 16px 8px 16px !important;
+    font-family: 'Athiti';
+    font-size: 24px;
 }
 
 #navUserDropdown {
@@ -103,8 +108,41 @@ nav {
 	font-weight: bold;
 }
 
+#imgUserProfile {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+}
 .sliding-content {
     position: relative;
     overflow: hidden;
-    height: 100%;
+}
+
+#btnBack {
+  width: 55px;
+  height: 55px;
+  //margin: 0.5vh;
+  border-radius: 50%;
+  //background: #db4437;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0px 2px 5px #666;
+}
+
+.plus {
+	color: #666666;
+	text-align: center;
+	padding: 0;
+	margin: ;
+	line-height: 55px;
+	font-size: 38px;
+	font-family: 'Roboto';
+	font-weight: 300;
+}
+
+#pagPageEdit {
+	overflow-y: auto;
+	overflow-x: hidden;
 }
