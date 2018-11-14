@@ -1,9 +1,12 @@
+import csv
+
 from . import db, app, bcrypt
 from models import Group, Page
 
 from flask import render_template, request, redirect, flash
 from flask_login import login_user, login_required, logout_user, current_user
 import hashlib
+from werkzeug import secure_filename
 
 @app.route('/')
 def index():
@@ -24,7 +27,6 @@ def login():
     if group:
         if bcrypt.check_password_hash(group.password_hash, password):
             login_user(group)
-            flash('Login Successful')
             return redirect('/dashboard')
 
     flash('Invalid username or password')
@@ -65,9 +67,19 @@ def logout():
 @login_required
 def admin_dashboard():
     if request.method == 'POST':
-        if request.form.get('file'):
-            file_upload = request.form.get('file')
-            print (file_upload)
+        print('post request created')
+        f = request.files['file']
+        filename = f.filename
+        if filename.split('.')[1] == 'csv':
+            csv_reader = csv.reader(f, delimiter=',')
+            line_count = 0
+            for row in csv_reader:
+                if line_count > 0:
+                    group_username, group_password, group_members = row[0], row[1], row[2:]
+                    password_hash = bcrypt.generate_password_hash(group_password)
+                    group = Group(username=group_username, password=password_hash, members=', '.join(members))
+                    print(group)
+                line_count += 1
 
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():

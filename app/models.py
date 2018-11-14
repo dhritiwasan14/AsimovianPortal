@@ -9,6 +9,7 @@ class Group(db.Model, UserMixin):
     admin = db.Column(db.Integer, default=0, nullable=False)
     pages = db.relationship('Page', backref='user', lazy=True)
     authenticated = db.Column(db.Boolean, default=False)
+    members = db.Column(db.String(100), nullable=True) 
 
     def __init__(self, username, password_hash, admin):
         self.username = username

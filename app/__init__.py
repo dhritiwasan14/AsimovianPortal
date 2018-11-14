@@ -17,13 +17,13 @@ import routes, models
 
 migrate = Migrate(app, db)
 
-models.Group.query.order_by(models.Group.username).all()
+# models.Group.query.order_by(models.Group.username).all()
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+# login_manager = LoginManager()
+# login_manager.init_app(app)
 
-@login_manager.user_loader
-def load_user(id):
-	print(id)
-	group = models.Group.query.get(int(id))
-	return group
+# @login_manager.user_loader
+# def load_user(id):
+# 	print(id)
+# 	group = models.Group.query.get(int(id))
+# 	return group
