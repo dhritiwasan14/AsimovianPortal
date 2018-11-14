@@ -83,7 +83,7 @@ def admin_dashboard():
 
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():
-        return render_template('admin-dashboard.html')
+        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"))
     else:
         return redirect('/student-dashboard/' + group.username)
 
