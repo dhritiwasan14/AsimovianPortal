@@ -1,7 +1,7 @@
 import csv
 
 from . import db, app, bcrypt
-from models import Group, Page
+from models import Group, Page, Class
 
 from flask import render_template, request, redirect, flash
 from flask_login import login_user, login_required, logout_user, current_user
@@ -18,12 +18,12 @@ def login():
 
     if request.method == 'GET':
 	    return render_template('login.html', year = datetime.now().year)
-
+    print('here')
     username = request.form.get('username')
     password = request.form.get('password')
 
     group = Group.query.filter_by(username=username).first()
-    
+    print('failed to connect?')
     if group:
         if bcrypt.check_password_hash(group.password_hash, password):
             login_user(group)
@@ -64,23 +64,27 @@ def logout():
     return redirect('/')
 
 @app.route('/dashboard', methods=['GET', 'POST'])
-@login_required
 def admin_dashboard():
     if request.method == 'POST':
-        print('post request created')
+        class_name = request.form.get('class-name')
+        deadline = request.form.get('deadline')
         f = request.files['file']
         filename = f.filename
-        if filename.split('.')[1] == 'csv':
+        class_create = Class(class_name, deadline)
+        db.session.add(class_create)
+        if filename.split('.')[1] == 'csv': # over here, test again with an actual csv file!!!! 
             csv_reader = csv.reader(f, delimiter=',')
             line_count = 0
             for row in csv_reader:
                 if line_count > 0:
                     group_username, group_password, group_members = row[0], row[1], row[2:]
                     password_hash = bcrypt.generate_password_hash(group_password)
-                    group = Group(username=group_username, password=password_hash, members=', '.join(members))
-                    print(group)
+                    group = Group(username=group_username, password=password_hash, members=', '.join(members), class_id=class_create.id)
+                    db.session.add(group)
                 line_count += 1
 
+        db.session.commit()
+        flash('Successfully created a class. ')
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():
         return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"))

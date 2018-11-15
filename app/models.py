@@ -9,7 +9,8 @@ class Group(db.Model, UserMixin):
     admin = db.Column(db.Integer, default=0, nullable=False)
     pages = db.relationship('Page', backref='user', lazy=True)
     authenticated = db.Column(db.Boolean, default=False)
-    members = db.Column(db.String(100), nullable=True) 
+    members = db.Column(db.String(100), nullable=True)
+    class_id = db.Column(db.Integer, db.ForeignKey('class.id'), nullable=False)
 
     def __init__(self, username, password_hash, admin):
         self.username = username
@@ -40,3 +41,13 @@ class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     last_update = db.Column(db.DateTime, nullable=True)
     group = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=True)
+
+
+class Class(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    class_name = db.Column(db.String(50), nullable=False)
+    deadline = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, class_name, deadline):
+        self.class_name = class_name
+        self.deadline = deadline

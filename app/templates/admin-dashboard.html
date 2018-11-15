@@ -51,88 +51,104 @@
 			</div>
 			<!-- Begin main detail view -->
 			<div class="col-md-10 col-xs-8 scrollable" style="z-index: 1; background: #F6F6F8;">
-				<div id="panDashboard" class="pane">
-					<div class="sliding-content">
-						<div id="pagClassList" style="position: relative;">
-							<div class="row">
-								<div class="col-md-10">
-									<h1>Class Management</h1>
+				
+				<div id="panDashboard" class="pane container-fluid" style="width:200%">
+					<div class="sliding-content" style="width: 100%; position: relative;">
+						<div class="row">
+							<div id="pagClassList" style="position: relative;" class="d-inline-block col-6 container-fluid">
+								<div class="row">
+									<div class="col-9">
+										<h1>Class Management</h1>
+									</div>
+									<div class="col-2">
+										<button class="btn btn-primary float-right h4" id="btnAddClass" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Class</button>
+									</div>
 								</div>
-								<div class="col-md-2">
-									<button class="btn btn-primary float-right h4" id="btnAddClass" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Class</button>
-								</div>
-							</div>
-							<br>
-							<div class="row">
-                                <!-- {% with messages = get_flashed_messages() %}
-                                {% if messages %}
-                                    {% for message in messages %}
-                                        <div class="alert alert-primary alert-dismissible text-left" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" class="float-right">&times;</span></button>
-                                        {{ message }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                                {% endwith %} -->
-								<div class="col-md-12">
-									<table class="table table-hover">
-										<colgroup>
-											<col width="10%">
-											<col width="35%">
-											<col width="25%">
-											<col width="20%">
-											<col width="5%">
-											<col width="5%">
-										</colgroup>
-										<thead>
-											<tr>
-												<th scope="col">#</th>
-												<th scope="col">Class Name</th>
-												<th scope="col">No. of Groups</th>
-												<th scope="col">Deadline</th>
-												<th scope="col"><i class="fas fa-edit"></i></th>
-												<th scope="col"><i class="fas fa-trash-alt"></i></th>
-											</tr>
-										</thead>
-										<tbody id="tblClasses">
-											<tr>
-												<td colspan="6">You have not added any classes!</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-						<div id="pagClassCreate" style="position: relative; left: 500vh; top: -27.75vh;">
-							<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
-  								<div class="col-md-1">
-									<div id="btnBack" data-toggle="tooltip" data-placement="left" data-original-title="Back">
-										<p class="plus"><i class="material-icons">arrow_back</i></p>
-		  							</div>
-  								</div>
-  								<div class="col-md-11">
-									<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Class</h1>
+								<br>
+								<div class="row">
+									<!-- {% with messages = get_flashed_messages() %}
+									{% if messages %}
+										{% for message in messages %}
+											<div class="alert alert-primary alert-dismissible text-left" role="alert">
+												<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" class="float-right">&times;</span></button>
+											{{ message }}
+											</div>
+										{% endfor %}
+									{% endif %}
+									{% endwith %} -->
+									<div class="col-11">
+										<table class="table table-hover">
+											<colgroup>
+												<col width="10%">
+												<col width="35%">
+												<col width="25%">
+												<col width="20%">
+												<col width="5%">
+												<col width="5%">
+											</colgroup>
+											<thead>
+												<tr>
+													<th scope="col">#</th>
+													<th scope="col">Class Name</th>
+													<th scope="col">No. of Groups</th>
+													<th scope="col">Deadline</th>
+													<th scope="col"><i class="fas fa-edit"></i></th>
+													<th scope="col"><i class="fas fa-trash-alt"></i></th>
+												</tr>
+											</thead>
+											<tbody id="tblClasses">
+												<tr>
+													<td colspan="6">You have not added any classes!</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
 								</div>
 							</div>
-							<br>
-							<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
-								<div class="col-md-12">
-                                    <form method="post" action="/dashboard" enctype = "multipart/form-data">
-                                    	<div class="form-group form-inline">
-                                    		<label for="edtClassName">Class Name: &nbsp;&nbsp;</label>
-                                    		<input type="text" class="form-control" size="50" name="edtClassName" id="edtClassName">
-                                    	</div>
-                                    	<div class="form-group form-inline">
-                                    		<label for="edtDeadline">Deadline: &nbsp;&nbsp;</label>
-                                    		<input type="datetime-local" class="form-control" size="50" name="edtDeadline" id="edtClassName">
-                                    	</div>
-                                    	<div class="row">
-                                            <div class="form-group files color">
-                                              <label>Upload Your File </label>
-                                              <input type="file" class="form-control" multiple="" accept=".xlsx, .csv, .xls" name="file">
-                                            </div>
-                                            <button type="submit" class="btn btn-primary" id="btnAddPage" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Create Groups</button>
-                                    </form>
+							<div id="pagClassCreate" style="position: relative;" class="d-inline-block col-6">
+								<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
+									  <div class="col-md-1">
+										<div id="btnBack" data-toggle="tooltip" data-placement="left" data-original-title="Back">
+											<p class="plus"><i class="material-icons">arrow_back</i></p>
+										  </div>
+									  </div>
+									  <div class="col-md-11">
+										<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Class</h1>
+									</div>
+								</div>
+								<br>
+								<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
+									<div class="col-md-12">
+										<form method="post" action="/dashboard" enctype = "multipart/form-data" class="container-fluid">
+											<div class="form-group form-inline row">
+												<div class="col-1">
+													<label for="edtClassName">Class Name: &nbsp;&nbsp;</label>
+												</div>
+												<div class="col-4">
+													<input type="text" class="form-control" size="50" name="class-name" id="edtClassName">
+												</div>
+											</div>
+											<div class="form-group form-inline row">
+												<div class="col-1">
+													<label for="edtDeadline">Deadline: &nbsp;&nbsp;</label>
+												</div>
+												<div class="col-4">
+													<input type="datetime-local" class="form-control" size="50" name="deadline" id="edtClassName">
+												</div>
+											</div>
+											<div class="row">
+												<div class="form-group files color col-6">
+												  <label>Upload Your File </label>
+												  <input type="file" class="form-control" multiple="" accept=".xlsx, .csv, .xls" name="file">
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-5">
+													<button type="submit" class="btn btn-primary" id="btnAddPage" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Create Groups</button>
+												</div>
+											</div>
+										</form>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -181,13 +197,13 @@
 
 			$("#btnAddClass").click(function(e) {
 				$("#pagClassList, #pagClassCreate").animate({
-					'left': '-=500vh'
+					'left': '-=74em'
 				});
 			});
 			$("#btnBack").click(function(e) {
 				saveClass();
 				$("#pagClassList, #pagClassCreate").animate({
-					'left': '+=500vh'
+					'left': '+=74em'
 				});
 			});
 		});
