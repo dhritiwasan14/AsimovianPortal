@@ -52,56 +52,69 @@
 			<!-- Begin main detail view -->
 			<div class="col-md-10 col-xs-8 scrollable" style="z-index: 1; background: #F6F6F8;">
 				
-				<div id="panDashboard" class="pane container-fluid" style="width:200%">
-					<div class="sliding-content" style="width: 100%; position: relative;">
+				<div id="panDashboard" class="pane">
+					<div class="sliding-content container-fluid" style="width: 200%; position: relative;">
 						<div class="row">
-							<div id="pagClassList" style="position: relative;" class="d-inline-block col-6 container-fluid">
-								<div class="row">
-									<div class="col-9">
-										<h1>Class Management</h1>
+							<div id="pagClassList" style="position: relative;" class="d-inline-block col-md-6">
+								<div class="container-fluid" style="width: 100%">
+									<div class="row">
+										<div class="col-md-10">
+											<h1>Class Management</h1>
+										</div>
+										<div class="col-md-2">
+											<button class="btn btn-primary float-right h4" id="btnAddClass" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Class</button>
+										</div>
 									</div>
-									<div class="col-2">
-										<button class="btn btn-primary float-right h4" id="btnAddClass" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Class</button>
-									</div>
-								</div>
-								<br>
-								<div class="row">
-									<!-- {% with messages = get_flashed_messages() %}
-									{% if messages %}
-										{% for message in messages %}
-											<div class="alert alert-primary alert-dismissible text-left" role="alert">
-												<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" class="float-right">&times;</span></button>
-											{{ message }}
-											</div>
-										{% endfor %}
-									{% endif %}
-									{% endwith %} -->
-									<div class="col-11">
-										<table class="table table-hover">
-											<colgroup>
-												<col width="10%">
-												<col width="35%">
-												<col width="25%">
-												<col width="20%">
-												<col width="5%">
-												<col width="5%">
-											</colgroup>
-											<thead>
-												<tr>
-													<th scope="col">#</th>
-													<th scope="col">Class Name</th>
-													<th scope="col">No. of Groups</th>
-													<th scope="col">Deadline</th>
-													<th scope="col"><i class="fas fa-edit"></i></th>
-													<th scope="col"><i class="fas fa-trash-alt"></i></th>
-												</tr>
-											</thead>
-											<tbody id="tblClasses">
-												<tr>
-													<td colspan="6">You have not added any classes!</td>
-												</tr>
-											</tbody>
-										</table>
+									<br>
+									<div class="row">
+										<!-- {% with messages = get_flashed_messages() %}
+										{% if messages %}
+											{% for message in messages %}
+												<div class="alert alert-primary alert-dismissible text-left" role="alert">
+													<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" class="float-right">&times;</span></button>
+												{{ message }}
+												</div>
+											{% endfor %}
+										{% endif %}
+										{% endwith %} -->
+										<div class="col-md-12">
+											<table class="table table-hover">
+												<colgroup>
+													<col width="10%">
+													<col width="25%">
+													<col width="25%">
+													<col width="30%">
+													<col width="5%">
+													<col width="5%">
+												</colgroup>
+												<thead>
+													<tr>
+														<th scope="col">#</th>
+														<th scope="col">Class Name</th>
+														<th scope="col">No. of Groups</th>
+														<th scope="col">Deadline</th>
+														<th scope="col"><i class="fas fa-edit"></i></th>
+														<th scope="col"><i class="fas fa-trash-alt"></i></th>
+													</tr>
+												</thead>
+												<tbody id="tblClasses">
+													<tr>
+														{% if classes %}
+															{% for cls in classes %}
+																<tr>
+																	<td>{{loop.index}}</td>
+																	<td>{{cls.class_name}}</td>
+																	<td>0</td>
+																	<td class="date-cell">{{cls.deadline}}</td>
+																	<td><a href="#"><i class="fas fa-edit"></i></a></td>
+																	<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+																</tr>
+															{% endfor %}
+														{% endif %}
+													</tr>
+												</tbody>
+											</table>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -121,30 +134,64 @@
 									<div class="col-md-12">
 										<form method="post" action="/dashboard" enctype = "multipart/form-data" class="container-fluid">
 											<div class="form-group form-inline row">
-												<div class="col-1">
-													<label for="edtClassName">Class Name: &nbsp;&nbsp;</label>
+												<div class="col-2">
+													<label for="edtClassName" class="float-left">Class Name: &nbsp;&nbsp;</label>
 												</div>
 												<div class="col-4">
 													<input type="text" class="form-control" size="50" name="class-name" id="edtClassName">
 												</div>
 											</div>
 											<div class="form-group form-inline row">
-												<div class="col-1">
-													<label for="edtDeadline">Deadline: &nbsp;&nbsp;</label>
+												<div class="col-2">
+													<label for="edtDeadline" class="float-left">Deadline: &nbsp;&nbsp;</label>
 												</div>
 												<div class="col-4">
-													<input type="datetime-local" class="form-control" size="50" name="deadline" id="edtClassName">
+													<input type="datetime-local" class="form-control" size="50" name="deadline" id="edtDeadline">
 												</div>
 											</div>
+											<input type="hidden" name="hdnGroupJSON" id="hdnGroupJSON" value="">
+											<input type="file" class="form-control" style="position: absolute; top: -100000vh;" multiple="" accept=".xlsx, .csv, .xls" name="group-file" id="group-file">
 											<div class="row">
-												<div class="form-group files color col-6">
-												  <label>Upload Your File </label>
-												  <input type="file" class="form-control" multiple="" accept=".xlsx, .csv, .xls" name="file">
+												<div class="col-md-12">
+													<button class="btn btn-success" id="btnUploadGroups"><i class="fas fa-upload"></i>&nbsp;Upload Groups</button>
+													&nbsp;
+													<button class="btn btn-primary" id="btnAddGroup"><i class="fas fa-plus"></i>&nbsp;Add Group</button>
 												</div>
 											</div>
+											<br>
 											<div class="row">
-												<div class="col-5">
-													<button type="submit" class="btn btn-primary" id="btnAddPage" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Create Groups</button>
+												<div class="col-md-12">
+													<table class="table table-hover">
+														<colgroup>
+															<col width="10%">
+															<col width="25%">
+															<col width="35%">
+															<col width="20%">
+															<col width="5%">
+															<col width="5%">
+														</colgroup>
+														<thead>
+															<tr>
+																<th scope="col">#</th>
+																<th scope="col">Group Name</th>
+																<th scope="col">Members</th>
+																<th scope="col">Password</th>
+																<th scope="col"><i class="fas fa-edit"></i></th>
+																<th scope="col"><i class="fas fa-trash-alt"></i></th>
+															</tr>
+														</thead>
+														<tbody id="tblGroups">
+															<tr>
+																<td colspan="6">You have not added any groups!</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-md-12">
+													<button class="btn btn-success float-right" id="btnSaveClass">Save Class</button>
 												</div>
 											</div>
 										</form>
@@ -197,14 +244,78 @@
 
 			$("#btnAddClass").click(function(e) {
 				$("#pagClassList, #pagClassCreate").animate({
-					'left': '-=74em'
+					'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
 				});
 			});
 			$("#btnBack").click(function(e) {
 				saveClass();
 				$("#pagClassList, #pagClassCreate").animate({
-					'left': '+=74em'
+					'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
 				});
+			});
+
+			$("#btnUploadGroups").click(function(e) {
+				e.preventDefault();	
+				$("#group-file").click();
+			});
+
+			$("#btnAddGroup").click(function(e) {
+				e.preventDefault();
+			})
+
+			$("#group-file").change(function(e) {
+				e.preventDefault();
+
+				var formData = new FormData();
+				formData.append("group-file", $("#group-file")[0].files[0]);
+
+				$.ajax({
+			        url: 'http://localhost:5000/dashboard/add-groups',
+			        data: formData,
+			        contentType: false,
+			        processData: false,
+			        type: 'POST',
+			        success: function ( data ) {
+			            response = data;
+
+			            var groupHTML = "";
+
+			            for(var i = 0; i < response.length; i++) {
+			            	groupHTML += "<tr>";
+			            	groupHTML += "<td>" + (i + 1) + "</td>";
+			            	groupHTML += "<td>" + response[i].username + "</td>";
+			            	groupHTML += "<td>" + response[i].members + "</td>";
+			            	groupHTML += "<td>---</td>"
+			            	groupHTML += "<td><a href=\"#\"><i class=\"fas fa-edit\"></a></td>";
+			            	groupHTML += "<td><a href=\"#\"><i class=\"fas fa-trash-alt\"></a></td>";
+			            	groupHTML += "</tr>";
+			            }
+
+			            $("#tblGroups").html(groupHTML);
+			            $("#hdnGroupJSON").val(JSON.stringify(data));
+			        }
+			    });
+			});
+
+			$("#btnSaveClass").click(function(e) {
+				e.preventDefault();
+
+				var className = $("#edtClassName").val();
+				var deadline = $("#edtDeadline").val();
+				var groupJSON = $("#hdnGroupJSON").val();
+
+				// TODO: Check if empty inputs
+
+				deadline = moment(deadline).format('YYYY-MM-DD HH:mm:ss');
+				
+				$.post("http://localhost:5000/dashboard/create-class", {class_name: className, deadline: deadline, groupJSON: groupJSON}, function(data) {
+					console.log(data);
+					// TODO: Display success and go back
+				});
+			});
+
+			$(".date-cell").each(function() {
+				$(this).html(moment($(this).html()).format('MMMM Do YYYY, h:mm:ss a'));
 			});
 		});
 	</script>

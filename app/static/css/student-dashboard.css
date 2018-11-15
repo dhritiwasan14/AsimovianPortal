@@ -18,7 +18,7 @@ html, body {
 
 .scrollable {
 	overflow-y: auto !important;
-	overflow-x: auto;
+	overflow-x: hidden;
 	height: 100vh;
 }
 .center {

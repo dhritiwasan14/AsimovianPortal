@@ -12,10 +12,12 @@ class Group(db.Model, UserMixin):
     members = db.Column(db.String(100), nullable=True)
     class_id = db.Column(db.Integer, db.ForeignKey('class.id'), nullable=False)
 
-    def __init__(self, username, password_hash, admin):
+    def __init__(self, username, password_hash, class_id, members, admin = 0):
         self.username = username
         self.password_hash = password_hash
         self.admin = admin
+        self.members = members
+        self.class_id = class_id
  
     def is_authenticated(self):
         #return self.authenticated

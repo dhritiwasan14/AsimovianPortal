@@ -3,9 +3,12 @@ import csv
 from . import db, app, bcrypt
 from models import Group, Page, Class
 
-from flask import render_template, request, redirect, flash
+from flask import render_template, request, redirect, flash, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 import hashlib
+import json
+import random
+import string
 from werkzeug import secure_filename
 
 @app.route('/')
@@ -64,32 +67,70 @@ def logout():
     return redirect('/')
 
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def admin_dashboard():
-    if request.method == 'POST':
-        class_name = request.form.get('class-name')
-        deadline = request.form.get('deadline')
-        f = request.files['file']
-        filename = f.filename
-        class_create = Class(class_name, deadline)
-        db.session.add(class_create)
-        if filename.split('.')[1] == 'csv': # over here, test again with an actual csv file!!!! 
-            csv_reader = csv.reader(f, delimiter=',')
-            line_count = 0
-            for row in csv_reader:
-                if line_count > 0:
-                    group_username, group_password, group_members = row[0], row[1], row[2:]
-                    password_hash = bcrypt.generate_password_hash(group_password)
-                    group = Group(username=group_username, password=password_hash, members=', '.join(members), class_id=class_create.id)
-                    db.session.add(group)
-                line_count += 1
-
-        db.session.commit()
-        flash('Successfully created a class. ')
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():
-        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"))
+        classes = Class.query.all()
+        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"), classes=classes)
     else:
         return redirect('/student-dashboard/' + group.username)
+
+@app.route('/dashboard/add-groups', methods=['POST'])
+def add_groups():
+    group_file = request.files['group-file']
+
+    groups = []
+
+    filename = group_file.filename
+    if filename.split('.')[-1] == 'csv': # over here, test again with an actual csv file!!!! 
+        csv_reader = csv.reader(group_file, delimiter=',')
+        for i, row in enumerate(csv_reader):
+            if i > 0:
+                group_name, group_members = row[0], row[1:]
+                group_members = [v for v in group_members if v != '']
+
+                if group_name == "":
+                    continue
+
+                group = dict()
+                group['username'] = group_name
+                group['members'] = ", ".join(group_members)
+                print(group['members'])
+                groups.append(group)
+                #password_hash = bcrypt.generate_password_hash(group_password)
+                #group = Group(username=group_username, password=password_hash, members=', '.join(members), class_id=class_create.id)
+                #db.session.add(group)
+
+    return jsonify(groups)
+
+@app.route('/dashboard/create-class', methods=['POST'])
+def create_class():
+    class_name = request.form.get('class_name')
+    deadline = request.form.get('deadline')
+    groups = json.loads(request.form.get('groupJSON'))
+    class_create = Class(class_name, deadline)
+
+    print(class_name, deadline, groups)
+    db.session.add(class_create)
+    db.session.commit()
+
+    for i, g in enumerate(groups):
+        group_password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+        password_hash = bcrypt.generate_password_hash(group_password)
+        group = Group(username = g['username'], password_hash=password_hash, members=g['members'], class_id = class_create.id)
+        groups[i]['password'] = group_password
+
+        db.session.add(group)
+
+    db.session.commit()
+    
+    response = dict()
+
+    response['success'] = True
+    response['message'] = "Successfully created class " + class_name + "!"
+
+    return jsonify(response)
 
 @app.route('/student-dashboard/<username>', methods=['GET'])
 @login_required
