@@ -115,6 +115,7 @@
 																<th scope="col">Members</th>
 																<th scope="col">Password</th>
 																<th scope="col"><i class="fas fa-eye" title="View group's wiki"></i></th>
+																<th scope="col"><i class="fas fa-columns" title="View group's dashboard"></i></th>
 																<th scope="col"><i class="fas fa-edit" title="Edit group's settings"></i></th>
 																<th scope="col"><i class="fas fa-trash-alt" title="Delete group"></i></th>
 															</tr>
@@ -390,14 +391,26 @@
 	            	groupHTML += "<td>" + response.class.groups[i].username + "</td>";
 	            	groupHTML += "<td>" + response.class.groups[i].members + "</td>";
 	            	groupHTML += "<td><button class=\"reset-group-password btn btn-danger\" id=\"" + response.class.groups[i].username + "\">Reset Password</button></td>"
-	            	groupHTML += "<td><a href=\"/" + response.class.groups[i].username + "\"><i class=\"fas fa-eye\" title=\"View group's wiki\"></i></a></td>";
+	            	groupHTML += "<td><a href=\"/" + response.class.groups[i].username + "\" target=\"_blank\"><i class=\"fas fa-eye\" title=\"View group's wiki\"></i></a></td>";
+	            	groupHTML += "<td><a href=\"/student-dashboard/" + response.class.groups[i].username +"\" target=\"_blank\"><i class=\"fas fa-columns\" title=\"View group's dashboard\"></i></a></td>";
 	            	groupHTML += "<td><a href=\"#\"><i class=\"fas fa-edit\" title=\"Edit group's settings\"></a></td>";
 	            	groupHTML += "<td><a href=\"#\"><i class=\"fas fa-trash-alt\" title=\"Delete group\"></a></td>";
 	            	groupHTML += "</tr>";
 	            }
 
 	            $("#tblViewGroups").html(groupHTML);
-	            $("#hdnViewGroupJSON").val(JSON.stringify(data));
+	            $("#hdnViewGroupJSON").val(JSON.stringify(response.class.groups));
+
+				$(".reset-group-password").click(function(e) {
+					e.preventDefault();
+					
+					var username = $(this).attr('id');
+					$.post('/dashboard/reset-group-password', {username: username}, function(response) {
+						if(response.success) {
+							// TODO: Display succesful reset message
+						}
+					});
+				});
 			})
 			$("#pagClassView, #pagClassList, #pagClassCreate").animate({
 				'left': "+=" + ($(".sliding-content").width() * 0.335) + "px"

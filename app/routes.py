@@ -74,6 +74,7 @@ def admin_dashboard():
         return redirect('/student-dashboard/' + group.username)
 
 @app.route('/dashboard/add-groups', methods=['POST'])
+@login_required
 def add_groups():
     group_file = request.files['group-file']
 
@@ -97,6 +98,29 @@ def add_groups():
                 groups.append(group)
 
     return jsonify(groups)
+
+@app.route('/dashboard/reset-group-password', methods=['POST'])
+@login_required
+def reset_group_password():
+    username = request.form.get('username')
+    group = db.session.query(Group).filter_by(username = username)[0]
+
+    group_password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+    group.password_hash = bcrypt.generate_password_hash(group_password)
+
+    g = dict()
+    g['username'] = username
+    g['members'] = group.members
+    g['password'] = group_password
+
+    mailer.send_passwords([g])
+
+    db.session.commit()
+    
+    response = dict()
+    response['success'] = True
+
+    return jsonify(response)
 
 @app.route('/dashboard/get-classes', methods=['GET'])
 @login_required
