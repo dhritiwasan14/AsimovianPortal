@@ -1,14 +1,18 @@
-import csv
+import csv, os, base64
 
 from . import db, app, bcrypt, mail, mailer
 from models import Group, Page, Class
-from flask import render_template, request, redirect, flash, jsonify
+from flask import render_template, request, redirect, flash, jsonify, send_from_directory
 from flask_login import login_user, login_required, logout_user, current_user
 import hashlib
 import json
 import random
 import string
 from werkzeug import secure_filename
+
+BASE_DIR =  os.getcwd()
+UPLOADS_DIR = BASE_DIR + '/app/uploads/'
+app.config['UPLOADS_FOLDER'] = UPLOADS_DIR
 
 @app.route('/')
 def index():
@@ -190,12 +194,35 @@ def student_dashboard(username):
     # click existing post, 
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin() or group.username == username:
-        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username))
+        images = []
+        list_files = os.listdir(UPLOADS_DIR+username)
+        for entry in list_files:
+            images.append('/uploads/'+username+'/'+entry)
+        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images)
     else:
-        return redirect('/student-dashboard/' + group.username)
+        return redirect('/login')
 
 # @app.route('/student-editor/<username>/<page>', methods=['GET', 'POST'])
 # @login_required
 # def student_editor(username, page):
 #     # handle post request for image upload, save as draft, prompt save. 
 #     image = request.form.get('')
+
+
+@app.route('/upload-image/<username>', methods=['POST'])
+@login_required
+def upload_image(username):
+    file_image = request.files['image']
+    file_name = file_image.filename
+    # check if dir exists else create
+    
+    if not os.path.isdir(UPLOADS_DIR+username):
+        os.mkdir(UPLOADS_DIR+username)
+    file_image.save(UPLOADS_DIR+username+'/'+file_name)
+    return 'yELLO'
+
+
+@app.route('/uploads/<username>/<filename>', methods=['GET'])
+@login_required
+def get_img_link(username, filename):
+    return send_from_directory(app.config['UPLOADS_FOLDER']+username+'/', filename, as_attachment=True)

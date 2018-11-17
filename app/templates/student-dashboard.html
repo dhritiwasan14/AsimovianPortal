@@ -10,12 +10,10 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="font.css">
+	
 	<link href="/static/css/student-dashboard.css" rel="stylesheet">
 	<link href="/static/css/editor-styles.css" rel="stylesheet">
 	<link href="/static/css/main.css" rel="stylesheet">
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css">
 </head>
 <body>
@@ -109,30 +107,38 @@
 										<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Page</h1>
 									</div>
 								</div>
-								<div class="box" style="margin-top: 1em;">
+								<div class="box" style="margin-top: 0.2em;">
 									<!-- Editor -->
+									<!-- Upload Image -->
+									<div class="custom-file container-fluid" style="padding-left:0px;">
+										<div class="row">
+											<div class="col-10">
+												<div class="input-group">
+													<div class="custom-file">															
+														<input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+														<label class="custom-file-label" for="inputGroupFile01">Choose file</label>													
+													</div>
+												</div>
+											</div>
+											<div class="col-2">
+												<button class="btn btn-primary float-right upload-image">Upload</button>
+											</div>
+										</div>
+									</div>
 									<!-- Image Gallery -->
-									<div class="demo-gallery">
-										<ul id="lightgallery" class="list-unstyled row">
-											<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/1-375.jpg 375, img/1-480.jpg 480, img/1.jpg 800" data-src="img/1-1600.jpg" data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
-												<a href="">
-													<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-1">
-												</a>
+
+									
+									<textarea name="page" id="page" cols="30" rows="10"></textarea>
+									<div class="demo-gallery" style="height: 8em; overflow-y:scroll; background-color:lightgrey; padding-top:0.2em;">
+										<ul id="lightgallery" class="list-styled row">
+											<input type="text" name="" id="" class="hidden-url" style="display:none">
+											{% for img in images %}
+											<li class="col-xs-6 col-sm-4 col-md-2" data-responsive="img/1-375.jpg 375, img/1-480.jpg 300, img/1.jpg 500" style="background-color: white;">
+												<img class="img-responsive get-link" src="{{img}}" alt="Thumb-1">
 											</li>
-											<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/2-375.jpg 375, img/2-480.jpg 480, img/2.jpg 800" data-src="img/2-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
-												<a href="">
-													<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-2">
-												</a>
-											</li>
-											<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/13-375.jpg 375, img/13-480.jpg 480, img/13.jpg 800" data-src="img/13-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
-												<a href="">
-													<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-3">
-												</a>
-											</li>
-											
+											{% endfor %}
 										</ul>
 									</div>
-									<textarea name="page" id="page" cols="30" rows="10"></textarea>
 								</div>
 								
 								
@@ -152,6 +158,13 @@
 	<script src="/static/js/lightgallery.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+
+			// load images
+			// for (var i = 0; i < {{images}}.length; i++;) {
+			// 	var image = new Image();
+			// 	image.src = 'data:image/'
+			// }
+
 			$("#btnAddPage").click(function(e) {
 				$("#pagPageList, #pagPageCreate").animate({
 					'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
@@ -164,9 +177,51 @@
 			});
 			var simplemde = new SimpleMDE({element: document.getElementById('page')});
 			lightGallery(document.getElementById('demo-gallery'), {
-				thumbnail: true
+				thumbnail: true,
+				cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
+				closable:false,
+				enableTouch: false,
+				enableDrag: false,
+				loop:true,
+				speed:1500
+			});
+			$('input').change(function(e) {
+				var filename = this.files[0].name;
+				console.log(filename);
+				$('.custom-file-label').text(filename);
+			})
+			$('.upload-image').click(function(e) {
+				e.preventDefault();
+
+				var image = $('input')[0];
+				var file = image.files[0];
+				var formData = new FormData();
+				formData.append('image', file);
+				$.ajax({
+					url: '/upload-image/{{username}}',
+					data: formData,
+					cache: false,
+					contentType: false,
+					processData: false,
+					type: 'POST',
+					success: function(data){
+						alert(data);
+					}
+				});	
 			});
 		});
+		$('.get-link').click(function(e) {
+			var src = $(this).attr('src');
+			console.log(src);
+			$('.hidden-url').text(src);
+			const selected =            
+				document.getSelection().rangeCount > 0        // Check if there is any content selected previously
+				? document.getSelection().getRangeAt(0)     // Store selection if found
+				: false;
+			$('.hidden-url').select();
+			document.execCommand("copy");
+			alert('Copied URL');
+		})
 
 	</script>
 </body>
