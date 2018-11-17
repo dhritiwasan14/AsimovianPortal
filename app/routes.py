@@ -21,12 +21,10 @@ def login():
 
     if request.method == 'GET':
 	    return render_template('login.html', year = datetime.now().year)
-    print('here')
     username = request.form.get('username')
     password = request.form.get('password')
 
     group = Group.query.filter_by(username=username).first()
-    print('failed to connect?')
     if group:
         if bcrypt.check_password_hash(group.password_hash, password):
             login_user(group)
@@ -72,7 +70,8 @@ def admin_dashboard():
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():
         classes = Class.query.all()
-        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"), classes=classes)
+        groups = Group.query.all()
+        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"), classes=classes, groups=groups)
     else:
         return redirect('/student-dashboard/' + group.username)
 
