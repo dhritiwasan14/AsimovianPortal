@@ -372,7 +372,8 @@
 			
 			$.post("/dashboard/create-class", {class_name: className, deadline: deadline, groupJSON: groupJSON}, function(data) {
 				console.log(data);
-				// TODO: Display success and go back
+				$("#btnBack").click();
+				reloadClasses();
 			});
 		}
 		
@@ -399,7 +400,7 @@
 	            $("#hdnViewGroupJSON").val(JSON.stringify(data));
 			})
 			$("#pagClassView, #pagClassList, #pagClassCreate").animate({
-				'left': "+=" + ($(".sliding-content").width() * 0.34) + "px"
+				'left': "+=" + ($(".sliding-content").width() * 0.335) + "px"
 			});
 		}
 
@@ -451,7 +452,7 @@
 			reloadClasses();
 
 			$("#pagClassView, #pagClassList, #pagClassCreate").animate({
-				'left': "-=" + ($(".sliding-content").width() * 0.34) + "px"
+				'left': "-=" + ($(".sliding-content").width() * 0.335) + "px"
 			}, 0);
 			
 			$(".side-nav-item").click(function(e) {
@@ -460,19 +461,18 @@
 
 			$("#btnAddClass").click(function(e) {
 				$("#pagClassList, #pagClassCreate").animate({
-					'left': "-=" + ($(".sliding-content").width() * 0.34) + "px"
+					'left': "-=" + ($(".sliding-content").width() * 0.335) + "px"
 				});
 			});
 			$("#btnBack").click(function(e) {
-				saveClass();
 				$("#pagClassList, #pagClassCreate").animate({
-					'left': "+=" + ($(".sliding-content").width() * 0.34) + "px"
+					'left': "+=" + ($(".sliding-content").width() * 0.335) + "px"
 				});
 			});
 
 			$("#btnViewBack").click(function(e) {
 				$("#pagClassView, #pagClassList, #pagClassCreate").animate({
-					'left': "-=" + ($(".sliding-content").width() * 0.34) + "px"
+					'left': "-=" + ($(".sliding-content").width() * 0.335) + "px"
 				});
 			})
 
