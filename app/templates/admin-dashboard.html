@@ -17,6 +17,42 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Create Class</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid modal-form">
+					<div class="row">
+						<div class="col-4"><label for="group-name">Group Name</label></div>
+						<div class="col-8"><input type="text" class="form-control"></div>
+					</div>
+					<br>
+					<br><br>
+					<div class="row">
+						<div class="col-md-10">
+							<h4>Members: </h4>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-primary add-member float-right"><i class="fa fa-plus"></i>&nbsp;Add Member</button>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+		</div>
+	</div>
 	<!-- Static navbar -->
 	<div class="container-fluid no-margin" id="nav-container" style="position: relative; z-index: 100;">
 		<nav class="navbar navbar-expand-lg navbar-light bg-white">
@@ -54,6 +90,7 @@
 				
 				<div id="panDashboard" class="pane">
 					<div class="sliding-content container-fluid" style="width: 200%; position: relative;">
+
 						<div class="row">
 							<div id="pagClassList" style="position: relative;" class="d-inline-block col-md-6">
 								<div class="container-fluid" style="width: 100%">
@@ -98,20 +135,18 @@
 													</tr>
 												</thead>
 												<tbody id="tblClasses">
-													<tr>
-														{% if classes %}
-															{% for cls in classes %}
-																<tr>
-																	<td>{{loop.index}}</td>
-																	<td>{{cls.class_name}}</td>
-																	<td>0</td>
-																	<td class="date-cell">{{cls.deadline}}</td>
-																	<td><a href="#"><i class="fas fa-edit"></i></a></td>
-																	<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-																</tr>
-															{% endfor %}
-														{% endif %}
-													</tr>
+													{% if classes %}
+														{% for cls in classes %}
+															<tr class="class-row" id="{{cls.id}}">
+																<td>{{loop.index}}</td>
+																<td>{{cls.class_name}}</td>
+																<td>0</td>
+																<td class="date-cell">{{cls.deadline}}</td>
+																<td><a href="#"><i class="fas fa-edit"></i></a></td>
+																<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+															</tr>
+														{% endfor %}
+													{% endif %}
 												</tbody>
 											</table>
 										</div>
@@ -155,7 +190,7 @@
 												<div class="col-md-12">
 													<button class="btn btn-success" id="btnUploadGroups"><i class="fas fa-upload"></i>&nbsp;Upload Groups</button>
 													&nbsp;
-													<button class="btn btn-primary" id="btnAddGroup"><i class="fas fa-plus"></i>&nbsp;Add Group</button>
+													<button class="btn btn-primary" id="btnAddGroup" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>&nbsp;Add Group</button>
 												</div>
 											</div>
 											<br>
@@ -317,6 +352,17 @@
 			$(".date-cell").each(function() {
 				$(this).html(moment($(this).html()).format('MMMM Do YYYY, h:mm:ss a'));
 			});
+			
+			$('.add-member').click(function(e) {
+				e.preventDefault();
+				$('.modal-form').append('<br><div class="row"><div class="col-4"><label>Member Student ID:</label></div><div class="col-8"><input type="text" class="form-control member-id-input"></div></div>');
+			})
+
+			$('.class-row').click(function(e) {
+				var id = $(this).attr('id');
+
+			})
+			
 		});
 	</script>
 </body>

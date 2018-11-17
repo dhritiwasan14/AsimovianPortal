@@ -36,3 +36,8 @@ form {
 .pane {
     overflow-x: hidden;
 }
+
+.modal {
+    margin-top: 10em;
+    
+}
