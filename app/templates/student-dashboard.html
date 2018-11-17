@@ -12,10 +12,10 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="font.css">
 	<link href="/static/css/student-dashboard.css" rel="stylesheet">
+	<link href="/static/css/editor-styles.css" rel="stylesheet">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css">
-    
 </head>
 <body>
 	<!-- Static navbar -->
@@ -53,72 +53,91 @@
 			<!-- Begin main detail view -->
 			<div class="col-md-10 col-xs-8 scrollable" style="background: #F6F6F8;">
 				<div id="panDashboard" class="pane">
-						<div class="sliding-content container-fluid" style="width: 200%; position: relative;">
-
-								<div class="row">
-									<div id="pagPageList" style="position: relative;" class="d-inline-block col-md-6">
-										<div class="container-fluid" style="width: 100%">
-											<div class="row">
-												<div class="col-md-10">
-													<h1>Pages</h1>
-												</div>
-												<div class="col-md-2">
-													<button class="btn btn-primary float-right h4" id="btnAddPage" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Page</button>
-												</div>
-											</div>
-											<br>
-											<div class="row">
-												<div class="col-md-12">
-													<table class="table table-hover">
-														<colgroup>
-															<col width="10%">
-															<col width="35%">
-															<col width="25%">
-															<col width="20%">
-															<col width="5%">
-															<col width="5%">
-														</colgroup>
-														<thead>
-															<tr>
-																<th scope="col">#</th>
-																<th scope="col">Page Name</th>
-																<th scope="col">Last Edited</th>
-																<th scope="col">Views</th>
-																<th scope="col"><i class="fas fa-edit"></i></th>
-																<th scope="col"><i class="fas fa-trash-alt"></i></th>
-															</tr>
-														</thead>
-														<tbody id="tblPages">
-															<tr>
-																<td colspan="6">You have not added any pages!</td>
-															</tr>
-														</tbody>
-													</table>
-											</div>
-											</div>
+					<div class="sliding-content container-fluid" style="width: 200%; position: relative;">
+						<div class="row">
+							<div id="pagPageList" style="position: relative;" class="d-inline-block col-md-6">
+								<div class="container-fluid" style="width: 100%">
+									<div class="row">
+										<div class="col-md-10">
+											<h1>Pages</h1>
+										</div>
+										<div class="col-md-2">
+											<button class="btn btn-primary float-right h4" id="btnAddPage" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Page</button>
 										</div>
 									</div>
-									<div id="pagPageCreate" style="position: relative;" class="d-inline-block col-6">
-										<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
-											  <div class="col-md-1">
-												<div id="btnBack" data-toggle="tooltip" data-placement="left" data-original-title="Back">
-													<p class="plus"><i class="material-icons">arrow_back</i></p>
-												  </div>
-											  </div>
-											  <div class="col-md-11">
-												<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Page</h1>
-											</div>
-											
-										</div>
-										<textarea name="page" id="page" cols="30" rows="10">
-
-										</textarea>
+									<br>
+									<div class="row">
+										<div class="col-md-12">
+											<table class="table table-hover">
+												<colgroup>
+													<col width="10%">
+													<col width="35%">
+													<col width="25%">
+													<col width="20%">
+													<col width="5%">
+													<col width="5%">
+												</colgroup>
+												<thead>
+													<tr>
+														<th scope="col">#</th>
+														<th scope="col">Page Name</th>
+														<th scope="col">Last Edited</th>
+														<th scope="col">Views</th>
+														<th scope="col"><i class="fas fa-edit"></i></th>
+														<th scope="col"><i class="fas fa-trash-alt"></i></th>
+													</tr>
+												</thead>
+												<tbody id="tblPages">
+													<tr>
+														<td colspan="6">You have not added any pages!</td>
+													</tr>
+												</tbody>
+											</table>
+									</div>
 									</div>
 								</div>
 							</div>
-				</div>
-				<div id="panOrders" class="pane">
-					<h1>Account Management</h1>
+							<div id="pagPageCreate" style="position: relative;" class="d-inline-block col-6">
+								<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
+										<div class="col-md-1">
+										<div id="btnBack" data-toggle="tooltip" data-placement="left" data-original-title="Back">
+											<p class="plus"><i class="material-icons">arrow_back</i></p>
+											</div>
+										</div>
+										<div class="col-md-11">
+										<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Page</h1>
+									</div>
+								</div>
+								<!-- Editor -->
+								<textarea name="page" id="page" cols="30" rows="10"></textarea>
+								<!-- Image Gallery -->
+								<div class="demo-gallery">
+									<ul id="lightgallery" class="list-unstyled row">
+										<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/1-375.jpg 375, img/1-480.jpg 480, img/1.jpg 800" data-src="img/1-1600.jpg" data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
+											<a href="">
+												<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-1">
+											</a>
+										</li>
+										<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/2-375.jpg 375, img/2-480.jpg 480, img/2.jpg 800" data-src="img/2-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
+											<a href="">
+												<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-2">
+											</a>
+										</li>
+										<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/13-375.jpg 375, img/13-480.jpg 480, img/13.jpg 800" data-src="img/13-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
+											<a href="">
+												<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-3">
+											</a>
+										</li>
+										<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/4-375.jpg 375, img/4-480.jpg 480, img/4.jpg 800" data-src="img/4-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
+											<a href="">
+												<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-4">
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -129,6 +148,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<script src="/static/js/student-dashboard.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"></script>
+	<script src="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/js/lightgallery.js"></script>
+	<script src="https://cdn.rawgit.com/sachinchoolur/lg-pager.js/master/dist/lg-pager.js"></script>
+	<script src="https://cdn.rawgit.com/sachinchoolur/lg-autoplay.js/master/dist/lg-autoplay.js"></script>
+	<script src="https://cdn.rawgit.com/sachinchoolur/lg-fullscreen.js/master/dist/lg-fullscreen.js"></script>
+	<script src="https://cdn.rawgit.com/sachinchoolur/lg-zoom.js/master/dist/lg-zoom.js"></script>
+	<script src="https://cdn.rawgit.com/sachinchoolur/lg-hash.js/master/dist/lg-hash.js"></script>
+	<script src="https://cdn.rawgit.com/sachinchoolur/lg-share.js/master/dist/lg-share.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#btnAddPage").click(function(e) {
@@ -143,9 +170,9 @@
 				});
 			});
 			var simplemde = new SimpleMDE({element: document.getElementById('page')});
-			$('#page').onchange(function() {
-				simplemde.value();
-			})
+			lightGallery(document.getElementById('demo-gallery'), {
+				thumbnail: true
+			});
 		});
 
 	</script>
