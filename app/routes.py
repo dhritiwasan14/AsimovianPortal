@@ -69,8 +69,7 @@ def admin_dashboard():
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():
         classes = Class.query.all()
-        groups = Group.query.all()
-        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"), classes=classes, groups=groups)
+        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"), classes=classes)
     else:
         return redirect('/student-dashboard/' + group.username)
 
@@ -99,6 +98,25 @@ def add_groups():
 
     return jsonify(groups)
 
+@app.route('/dashboard/get-classes', methods=['GET'])
+@login_required
+def get_classes():
+    result = Class.query.all()
+
+    classes = []
+    for c in result:
+        cls = dict()
+        cls['id'] = c.id
+        cls['name'] = c.class_name
+        cls['deadline'] = str(c.deadline)
+        classes.append(cls)
+
+    response = dict()
+    response['classes'] = classes
+    response['success'] = True
+
+    return jsonify(response)
+
 @app.route('/dashboard/create-class', methods=['POST'])
 def create_class():
     class_name = request.form.get('class_name')
@@ -126,6 +144,27 @@ def create_class():
 
     response['success'] = True
     response['message'] = "Successfully created class " + class_name + "!"
+
+    return jsonify(response)
+
+@app.route('/dashboard/get-class/<id>', methods=['GET'])
+@login_required
+def get_class(id):
+    cls = Class.query.get(int(id))
+    groups = db.session.query(Group).filter_by(class_id=id)
+
+    response = dict()
+    response['success'] = True
+    response['class'] = dict()
+    response['class']['name'] = cls.class_name
+    response['class']['deadline'] = str(cls.deadline)
+    response['class']['groups'] = []
+
+    for g in groups:
+        group = dict()
+        group['username'] = g.username
+        group['members'] = g.members
+        response['class']['groups'].append(group)
 
     return jsonify(response)
 

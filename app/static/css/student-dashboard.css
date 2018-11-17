@@ -120,7 +120,7 @@ nav {
     overflow: hidden;
 }
 
-#btnBack {
+#btnBack, #btnViewBack {
   width: 55px;
   height: 55px;
   //margin: 0.5vh;

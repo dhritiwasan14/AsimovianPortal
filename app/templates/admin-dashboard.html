@@ -17,42 +17,6 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">Create Class</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-			</div>
-			<div class="modal-body">
-				<div class="container-fluid modal-form">
-					<div class="row">
-						<div class="col-4"><label for="group-name">Group Name</label></div>
-						<div class="col-8"><input type="text" class="form-control"></div>
-					</div>
-					<br>
-					<br><br>
-					<div class="row">
-						<div class="col-md-10">
-							<h4>Members: </h4>
-						</div>
-						<div class="col-md-2">
-							<button class="btn btn-primary add-member float-right"><i class="fa fa-plus"></i>&nbsp;Add Member</button>
-						</div>
-					</div>
-					
-				</div>
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Save changes</button>
-			</div>
-		</div>
-		</div>
-	</div>
 	<!-- Static navbar -->
 	<div class="container-fluid no-margin" id="nav-container" style="position: relative; z-index: 100;">
 		<nav class="navbar navbar-expand-lg navbar-light bg-white">
@@ -89,10 +53,91 @@
 			<div class="col-md-10 col-xs-8 scrollable" style="z-index: 1; background: #F6F6F8;">
 				
 				<div id="panDashboard" class="pane">
-					<div class="sliding-content container-fluid" style="width: 200%; position: relative;">
+					<div class="sliding-content container-fluid" style="width: 300%; position: relative;">
 
 						<div class="row">
-							<div id="pagClassList" style="position: relative;" class="d-inline-block col-md-6">
+							<div id="pagClassView" style="position: relative;" class="d-inline-block col-md-4">
+								<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
+									  <div class="col-md-11">
+										<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">View Class</h1>
+									  </div>
+									  <div class="col-md-1">
+										<div id="btnViewBack" data-toggle="tooltip" data-placement="left" data-original-title="Back">
+											<p class="plus"><i class="material-icons">arrow_forward</i></p>
+										  </div>
+									  </div>
+								</div>
+								<br>
+								<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
+									<div class="col-md-12">
+										<form method="post" action="/dashboard" enctype = "multipart/form-data" class="container-fluid">
+											<div class="form-group form-inline row">
+												<div class="col-2">
+													<label for="edtViewClassName" class="float-left">Class Name: &nbsp;&nbsp;</label>
+												</div>
+												<div class="col-4">
+													<input type="text" class="form-control" size="50" name="class-name" id="edtViewClassName">
+												</div>
+											</div>
+											<div class="form-group form-inline row">
+												<div class="col-2">
+													<label for="edtViewDeadline" class="float-left">Deadline: &nbsp;&nbsp;</label>
+												</div>
+												<div class="col-4">
+													<input type="datetime-local" class="form-control" size="50" name="deadline" id="edtViewDeadline">
+												</div>
+											</div>
+											<input type="hidden" name="hdnViewGroupJSON" id="hdnGroupJSON" value="">
+											<input type="file" class="form-control" style="position: absolute; top: -100000vh;" multiple="" accept=".xlsx, .csv, .xls" name="view-group-file" id="view-group-file">
+											<div class="row">
+												<div class="col-md-12">
+													<button class="btn btn-success" id="btnViewUploadGroups"><i class="fas fa-upload"></i>&nbsp;Upload Groups</button>
+													&nbsp;
+													<button class="btn btn-primary" id="btnViewAddGroup" data-toggle="modal" data-target="#mdlViewAddGroup"><i class="fas fa-plus"></i>&nbsp;Add Group</button>
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-md-12">
+													<table class="table table-hover">
+														<colgroup>
+															<col width="10%">
+															<col width="25%">
+															<col width="35%">
+															<col width="20%">
+															<col width="5%">
+															<col width="5%">
+														</colgroup>
+														<thead>
+															<tr>
+																<th scope="col">#</th>
+																<th scope="col">Group Name</th>
+																<th scope="col">Members</th>
+																<th scope="col">Password</th>
+																<th scope="col"><i class="fas fa-eye" title="View group's wiki"></i></th>
+																<th scope="col"><i class="fas fa-edit" title="Edit group's settings"></i></th>
+																<th scope="col"><i class="fas fa-trash-alt" title="Delete group"></i></th>
+															</tr>
+														</thead>
+														<tbody id="tblViewGroups">
+															<tr>
+																<td colspan="6">You have not added any groups!</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-md-12">
+													<button class="btn btn-success float-right" id="btnViewSaveClass">Save Class</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							<div id="pagClassList" style="position: relative;" class="d-inline-block col-md-4">
 								<div class="container-fluid" style="width: 100%">
 									<div class="row">
 										<div class="col-md-10">
@@ -135,25 +180,14 @@
 													</tr>
 												</thead>
 												<tbody id="tblClasses">
-													{% if classes %}
-														{% for cls in classes %}
-															<tr class="class-row" id="{{cls.id}}">
-																<td>{{loop.index}}</td>
-																<td>{{cls.class_name}}</td>
-																<td>0</td>
-																<td class="date-cell">{{cls.deadline}}</td>
-																<td><a href="#"><i class="fas fa-edit"></i></a></td>
-																<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-															</tr>
-														{% endfor %}
-													{% endif %}
+
 												</tbody>
 											</table>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div id="pagClassCreate" style="position: relative;" class="d-inline-block col-6">
+							<div id="pagClassCreate" style="position: relative;" class="d-inline-block col-md-4">
 								<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
 									  <div class="col-md-1">
 										<div id="btnBack" data-toggle="tooltip" data-placement="left" data-original-title="Back">
@@ -190,7 +224,7 @@
 												<div class="col-md-12">
 													<button class="btn btn-success" id="btnUploadGroups"><i class="fas fa-upload"></i>&nbsp;Upload Groups</button>
 													&nbsp;
-													<button class="btn btn-primary" id="btnAddGroup" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>&nbsp;Add Group</button>
+													<button class="btn btn-primary" id="btnAddGroup" data-toggle="modal" data-target="#mdlAddGroup"><i class="fas fa-plus"></i>&nbsp;Add Group</button>
 												</div>
 											</div>
 											<br>
@@ -242,6 +276,69 @@
 			</div>
 		</div>
 	</div>
+	<!-- Add Group Modal -->
+	<div class="modal fade" id="mdlAddGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Create Class</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid modal-form">
+					<div class="row">
+						<div class="col-4"><label for="group-name">Group Name</label></div>
+						<div class="col-8"><input type="text" class="form-control"></div>
+					</div>
+					<br>
+					<br><br>
+					<div class="row">
+						<div class="col-md-10">
+							<h4>Members: </h4>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-primary add-member float-right"><i class="fa fa-plus"></i>&nbsp;Add Member</button>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+		</div>
+	</div>
+
+	<!-- Delete class confirmation modal -->
+	<div class="modal fade" id="mdlDeleteClass" tabindex="-1" role="dialog" aria-labelledby="mdlDeleteClassLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="mdlDeleteClassLabel">Delete Class</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				<p>
+					This action will delete all associated groups as well.
+				</p>
+				<p class="text-danger">
+					This action CANNOT BE UNDONE!
+				</p>
+				<input type="hidden" name="hdnDeleteClass" id="hdnDeleteClass" value="">
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger" id="btnConfirmDeleteClass">Delete Class</button>
+			</div>
+		</div>
+		</div>
+	</div>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
@@ -265,13 +362,97 @@
 		}
 
 		function saveClass() {
+			var className = $("#edtClassName").val();
+			var deadline = $("#edtDeadline").val();
+			var groupJSON = $("#hdnGroupJSON").val();
+			
+			// TODO: Check if empty inputs
 
+			deadline = moment(deadline).format('YYYY-MM-DD HH:mm:ss');
+			
+			$.post("/dashboard/create-class", {class_name: className, deadline: deadline, groupJSON: groupJSON}, function(data) {
+				console.log(data);
+				// TODO: Display success and go back
+			});
 		}
 		
+		function viewClass(id) {
+			$.get('/dashboard/get-class/' + id, function(response) {
+				$("#edtViewClassName").val(response.class.name);
+				$("#edtViewDeadline").val(moment(response.class.deadline).format('YYYY-MM-DDTHH:mm'));
+
+				var groupHTML = "";
+
+	            for(var i = 0; i < response.class.groups.length; i++) {
+	            	groupHTML += "<tr>";
+	            	groupHTML += "<td>" + (i + 1) + "</td>";
+	            	groupHTML += "<td>" + response.class.groups[i].username + "</td>";
+	            	groupHTML += "<td>" + response.class.groups[i].members + "</td>";
+	            	groupHTML += "<td><button class=\"reset-group-password btn btn-danger\" id=\"" + response.class.groups[i].username + "\">Reset Password</button></td>"
+	            	groupHTML += "<td><a href=\"/" + response.class.groups[i].username + "\"><i class=\"fas fa-eye\" title=\"View group's wiki\"></i></a></td>";
+	            	groupHTML += "<td><a href=\"#\"><i class=\"fas fa-edit\" title=\"Edit group's settings\"></a></td>";
+	            	groupHTML += "<td><a href=\"#\"><i class=\"fas fa-trash-alt\" title=\"Delete group\"></a></td>";
+	            	groupHTML += "</tr>";
+	            }
+
+	            $("#tblViewGroups").html(groupHTML);
+	            $("#hdnViewGroupJSON").val(JSON.stringify(data));
+			})
+			$("#pagClassView, #pagClassList, #pagClassCreate").animate({
+				'left': "+=" + ($(".sliding-content").width() * 0.34) + "px"
+			});
+		}
+
+		function reloadClasses() {
+			$.get('/dashboard/get-classes', function(response) {
+				var classHTML = "";
+
+				for(var i = 0; i < response.classes.length; i++) {
+					classHTML += "<tr>";
+					classHTML += "<td>" + (i + 1) + "</td>";
+					classHTML += "<td>" + response.classes[i].name + "</td>";
+					classHTML += "<td>0</td>";
+					classHTML += "<td class=\"date-cell\">" + response.classes[i].deadline + "</td>";
+					classHTML += "<td><a href=\"#\"><i class=\"fas fa-edit edit-class\" id=\"" + response.classes[i].id + "\"></i></a></td>";
+					classHTML += "<td><a href=\"#\"><i class=\"fas fa-trash-alt delete-class\" id=\"" + response.classes[i].id + "\"></i></a></td>";
+					classHTML += "</tr>";
+				}
+
+				if(response.classes.length == 0) {
+					classHTML = "<tr colspan=6><td>You have not created any classes!</td></tr>";
+				}
+
+				$("#tblClasses").html(classHTML);
+
+				$(".date-cell").each(function() {
+					$(this).html(moment($(this).html()).format('MMMM Do YYYY, h:mm:ss a'));
+				});
+
+				$('.edit-class').click(function(e) {
+					e.preventDefault();
+
+					var id = $(this).attr('id');
+					viewClass(id);
+				});
+				
+				$('.delete-class').click(function(e) {
+					e.preventDefault();
+
+					var id = $(this).attr('id');
+					$("#hdnDeleteClass").val(id);
+					$("#mdlDeleteClass").modal();
+				});
+			});
+		}
 		// Set up event listener for when the DOM is fully loaded
 		$(document).ready(function() {
 			// Select the provided event, or the first event as appropriate
 			select(selected);
+			reloadClasses();
+
+			$("#pagClassView, #pagClassList, #pagClassCreate").animate({
+				'left': "-=" + ($(".sliding-content").width() * 0.34) + "px"
+			}, 0);
 			
 			$(".side-nav-item").click(function(e) {
 				select($(this).attr('id').substring(3));
@@ -279,15 +460,21 @@
 
 			$("#btnAddClass").click(function(e) {
 				$("#pagClassList, #pagClassCreate").animate({
-					'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
+					'left': "-=" + ($(".sliding-content").width() * 0.34) + "px"
 				});
 			});
 			$("#btnBack").click(function(e) {
 				saveClass();
 				$("#pagClassList, #pagClassCreate").animate({
-					'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
+					'left': "+=" + ($(".sliding-content").width() * 0.34) + "px"
 				});
 			});
+
+			$("#btnViewBack").click(function(e) {
+				$("#pagClassView, #pagClassList, #pagClassCreate").animate({
+					'left': "-=" + ($(".sliding-content").width() * 0.34) + "px"
+				});
+			})
 
 			$("#btnUploadGroups").click(function(e) {
 				e.preventDefault();	
@@ -305,7 +492,7 @@
 				formData.append("group-file", $("#group-file")[0].files[0]);
 
 				$.ajax({
-			        url: 'http://localhost:5000/dashboard/add-groups',
+			        url: '/dashboard/add-groups',
 			        data: formData,
 			        contentType: false,
 			        processData: false,
@@ -335,34 +522,19 @@
 			$("#btnSaveClass").click(function(e) {
 				e.preventDefault();
 
-				var className = $("#edtClassName").val();
-				var deadline = $("#edtDeadline").val();
-				var groupJSON = $("#hdnGroupJSON").val();
-
-				// TODO: Check if empty inputs
-
-				deadline = moment(deadline).format('YYYY-MM-DD HH:mm:ss');
-				
-				$.post("http://localhost:5000/dashboard/create-class", {class_name: className, deadline: deadline, groupJSON: groupJSON}, function(data) {
-					console.log(data);
-					// TODO: Display success and go back
-				});
+				saveClass();
 			});
 
-			$(".date-cell").each(function() {
-				$(this).html(moment($(this).html()).format('MMMM Do YYYY, h:mm:ss a'));
-			});
-			
 			$('.add-member').click(function(e) {
 				e.preventDefault();
 				$('.modal-form').append('<br><div class="row"><div class="col-4"><label>Member Student ID:</label></div><div class="col-8"><input type="text" class="form-control member-id-input"></div></div>');
-			})
+			});
 
-			$('.class-row').click(function(e) {
-				var id = $(this).attr('id');
+			$("#btnConfirmDeleteClass").click(function(e) {
+				e.preventDefault();
 
-			})
-			
+				
+			});
 		});
 	</script>
 </body>
