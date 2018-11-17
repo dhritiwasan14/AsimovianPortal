@@ -1,8 +1,7 @@
 import csv
 
-from . import db, app, bcrypt
+from . import db, app, bcrypt, mail, mailer
 from models import Group, Page, Class
-
 from flask import render_template, request, redirect, flash, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 import hashlib
@@ -98,9 +97,6 @@ def add_groups():
                 group['members'] = ", ".join(group_members)
                 print(group['members'])
                 groups.append(group)
-                #password_hash = bcrypt.generate_password_hash(group_password)
-                #group = Group(username=group_username, password=password_hash, members=', '.join(members), class_id=class_create.id)
-                #db.session.add(group)
 
     return jsonify(groups)
 
@@ -125,6 +121,8 @@ def create_class():
 
     db.session.commit()
     
+    mailer.send_passwords(groups)
+
     response = dict()
 
     response['success'] = True
@@ -142,8 +140,6 @@ def student_dashboard(username):
         return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username))
     else:
         return redirect('/student-dashboard/' + group.username)
-
-
 
 # @app.route('/student-editor/<username>/<page>', methods=['GET', 'POST'])
 # @login_required
