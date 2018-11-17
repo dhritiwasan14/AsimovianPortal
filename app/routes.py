@@ -103,6 +103,7 @@ def add_groups():
 @login_required
 def reset_group_password():
     username = request.form.get('username')
+    print(username)
     group = db.session.query(Group).filter_by(username = username)[0]
 
     group_password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
@@ -116,7 +117,7 @@ def reset_group_password():
     mailer.send_passwords([g])
 
     db.session.commit()
-    
+
     response = dict()
     response['success'] = True
 
@@ -133,6 +134,7 @@ def get_classes():
         cls['id'] = c.id
         cls['name'] = c.class_name
         cls['deadline'] = str(c.deadline)
+        cls['groupcount'] = Group.query.filter_by(class_id = c.id).count()
         classes.append(cls)
 
     response = dict()

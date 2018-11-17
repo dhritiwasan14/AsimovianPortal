@@ -59,11 +59,8 @@ function viewClass(id) {
 			e.preventDefault();
 			
 			var username = $(this).attr('id');
-			$.post('/dashboard/reset-group-password', {username: username}, function(response) {
-				if(response.success) {
-					// TODO: Display succesful reset message
-				}
-			});
+			$("#hdnResetGroupPassword").val(username);
+			$("#mdlResetGroupPassword").modal();
 		});
 	})
 	$("#pagClassView, #pagClassList, #pagClassCreate").animate({
@@ -79,7 +76,7 @@ function reloadClasses() {
 			classHTML += "<tr>";
 			classHTML += "<td>" + (i + 1) + "</td>";
 			classHTML += "<td>" + response.classes[i].name + "</td>";
-			classHTML += "<td>0</td>";
+			classHTML += "<td>" + response.classes[i].groupcount + "</td>";
 			classHTML += "<td class=\"date-cell\">" + response.classes[i].deadline + "</td>";
 			classHTML += "<td><a href=\"#\"><i class=\"fas fa-edit edit-class\" id=\"" + response.classes[i].id + "\"></i></a></td>";
 			classHTML += "<td><a href=\"#\"><i class=\"fas fa-trash-alt delete-class\" id=\"" + response.classes[i].id + "\"></i></a></td>";
@@ -208,5 +205,16 @@ $(document).ready(function() {
 				$("#mdlDeleteClass").modal('hide');
 			}
 		})
+	});
+
+	$("#btnConfirmResetGroupPassword").click(function(e) {
+		$("#btnConfirmResetGroupPassword").html("<i class=\"fas fa-sync-alt spinning\"></i> Refreshing").attr("disabled", true);
+		var username = $("#hdnResetGroupPassword").val();
+		$.post('/dashboard/reset-group-password', {username: username}, function(response) {
+			if(response.success) {
+				$("#btnConfirmResetGroupPassword").html("Reset Password").removeAttr("disabled");
+				$("#mdlResetGroupPassword").modal('hide');
+			}
+		});
 	});
 });
