@@ -147,6 +147,21 @@ def create_class():
 
     return jsonify(response)
 
+@app.route('/dashboard/delete-class', methods=['POST'])
+@login_required
+def delete_class():
+    id = request.form.get('id')
+
+    Group.query.filter_by(class_id = id).delete()
+    Class.query.filter_by(id=int(id)).delete()
+
+    db.session.commit()
+
+    response = dict()
+    response['success'] = True
+
+    return jsonify(response)
+
 @app.route('/dashboard/get-class/<id>', methods=['GET'])
 @login_required
 def get_class(id):

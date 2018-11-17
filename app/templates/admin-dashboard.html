@@ -514,7 +514,7 @@
 			            }
 
 			            $("#tblGroups").html(groupHTML);
-			            $("#hdnGroupJSON").val(JSON.stringify(data));
+			            $("#hdnGroupJSON").val(JSON.stringify(response));
 			        }
 			    });
 			});
@@ -533,7 +533,14 @@
 			$("#btnConfirmDeleteClass").click(function(e) {
 				e.preventDefault();
 
-				
+				var id = $("#hdnDeleteClass").val();
+
+				$.post('/dashboard/delete-class', {id: id}, function(response) {
+					if(response.success) {
+						reloadClasses();
+						$("#mdlDeleteClass").modal('hide');
+					}
+				})
 			});
 		});
 	</script>
