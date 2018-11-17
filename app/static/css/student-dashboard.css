@@ -146,3 +146,7 @@ nav {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+.box {
+	margin-left: 2em;
+}
