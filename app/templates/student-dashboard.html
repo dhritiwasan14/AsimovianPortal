@@ -13,6 +13,7 @@
 	<link rel="stylesheet" type="text/css" href="font.css">
 	<link href="/static/css/student-dashboard.css" rel="stylesheet">
 	<link href="/static/css/editor-styles.css" rel="stylesheet">
+	<link href="/static/css/main.css" rel="stylesheet">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css">
@@ -93,12 +94,12 @@
 													</tr>
 												</tbody>
 											</table>
-									</div>
+										</div>
 									</div>
 								</div>
 							</div>
 							<div id="pagPageCreate" style="position: relative;" class="d-inline-block col-6">
-								<div class="row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
+								<div class="row messy-row" style="margin-top: 0.5vh; margin-left: 0.5vh;">
 										<div class="col-md-1">
 										<div id="btnBack" data-toggle="tooltip" data-placement="left" data-original-title="Back">
 											<p class="plus"><i class="material-icons">arrow_back</i></p>
@@ -108,33 +109,33 @@
 										<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Page</h1>
 									</div>
 								</div>
-								<!-- Editor -->
-								<textarea name="page" id="page" cols="30" rows="10"></textarea>
-								<!-- Image Gallery -->
-								<div class="demo-gallery">
-									<ul id="lightgallery" class="list-unstyled row">
-										<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/1-375.jpg 375, img/1-480.jpg 480, img/1.jpg 800" data-src="img/1-1600.jpg" data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
-											<a href="">
-												<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-1">
-											</a>
-										</li>
-										<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/2-375.jpg 375, img/2-480.jpg 480, img/2.jpg 800" data-src="img/2-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
-											<a href="">
-												<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-2">
-											</a>
-										</li>
-										<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/13-375.jpg 375, img/13-480.jpg 480, img/13.jpg 800" data-src="img/13-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
-											<a href="">
-												<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-3">
-											</a>
-										</li>
-										<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/4-375.jpg 375, img/4-480.jpg 480, img/4.jpg 800" data-src="img/4-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
-											<a href="">
-												<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-4">
-											</a>
-										</li>
-									</ul>
+								<div class="box" style="margin-top: 1em;">
+									<!-- Editor -->
+									<!-- Image Gallery -->
+									<div class="demo-gallery">
+										<ul id="lightgallery" class="list-unstyled row">
+											<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/1-375.jpg 375, img/1-480.jpg 480, img/1.jpg 800" data-src="img/1-1600.jpg" data-sub-html="<h4>Fading Light</h4><p>Classic view from Rigwood Jetty on Coniston Water an old archive shot similar to an old post but a little later on.</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
+												<a href="">
+													<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-1">
+												</a>
+											</li>
+											<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/2-375.jpg 375, img/2-480.jpg 480, img/2.jpg 800" data-src="img/2-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
+												<a href="">
+													<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-2">
+												</a>
+											</li>
+											<li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/13-375.jpg 375, img/13-480.jpg 480, img/13.jpg 800" data-src="img/13-1600.jpg" data-sub-html="<h4>Bowness Bay</h4><p>A beautiful Sunrise this morning taken En-route to Keswick not one as planned but I'm extremely happy I was passing the right place at the right time....</p>" data-pinterest-text="Pin it1" data-tweet-text="share on twitter 1">
+												<a href="">
+													<img class="img-responsive" src="/static/img/background-asimov.jpg" alt="Thumb-3">
+												</a>
+											</li>
+											
+										</ul>
+									</div>
+									<textarea name="page" id="page" cols="30" rows="10"></textarea>
 								</div>
+								
+								
 							</div>
 						</div>
 					</div>
@@ -157,7 +158,6 @@
 				});
 			});
 			$("#btnBack").click(function(e) {
-				saveClass();
 				$("#pagPageList, #pagPageCreate").animate({
 					'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
 				});
