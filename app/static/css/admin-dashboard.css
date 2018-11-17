@@ -1,3 +1,16 @@
+.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+
 .files input {
     outline: 2px dashed #92b0b3;
     outline-offset: -10px;
@@ -37,7 +50,21 @@ form {
     overflow-x: hidden;
 }
 
-.modal {
-    margin-top: 10em;
-    
+.content-page {
+    position: relative;
+}
+
+.content-page-header {
+     line-height: 55px;
+     height: 55px;
+     vertical-align: middle;
+}
+#nav-container {
+    position: relative;
+    z-index: 100;
+}
+
+#viwDetail {
+    z-index: 1;
+    background: #F6F6F8;
 }
