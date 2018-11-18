@@ -7,7 +7,7 @@
     margin-right: 20px;
     width: 200px;
 }
-.demo-gallery > ul > li a {
+.demo-gallery > ul > li {
     border: 3px solid #FFF;
     border-radius: 3px;
     display: block;
@@ -15,7 +15,7 @@
     position: relative;
     float: left;
 }
-.demo-gallery > ul > li a > img {
+.demo-gallery > ul > li > img {
     -webkit-transition: -webkit-transform 0.15s ease 0s;
     -moz-transition: -moz-transform 0.15s ease 0s;
     -o-transition: -o-transform 0.15s ease 0s;
@@ -25,14 +25,14 @@
     height: 100%;
     width: 100%;
 }
-.demo-gallery > ul > li a:hover > img {
+.demo-gallery > ul > li:hover > img {
     -webkit-transform: scale3d(1.1, 1.1, 1.1);
     transform: scale3d(1.1, 1.1, 1.1);
 }
-.demo-gallery > ul > li a:hover .demo-gallery-poster > img {
+.demo-gallery > ul > li:hover .demo-gallery-poster > img {
     opacity: 1;
 }
-.demo-gallery > ul > li a .demo-gallery-poster {
+.demo-gallery > ul > li .demo-gallery-poster {
     background-color: rgba(0, 0, 0, 0.1);
     bottom: 0;
     left: 0;
@@ -43,7 +43,7 @@
     -o-transition: background-color 0.15s ease 0s;
     transition: background-color 0.15s ease 0s;
 }
-.demo-gallery > ul > li a .demo-gallery-poster > img {
+.demo-gallery > ul > li .demo-gallery-poster > img {
     left: 50%;
     margin-left: -10px;
     margin-top: -10px;
@@ -54,10 +54,10 @@
     -o-transition: opacity 0.3s ease 0s;
     transition: opacity 0.3s ease 0s;
 }
-.demo-gallery > ul > li a:hover .demo-gallery-poster {
+.demo-gallery > ul > li:hover .demo-gallery-poster {
     background-color: rgba(0, 0, 0, 0.5);
 }
-.demo-gallery .justified-gallery > a > img {
+.demo-gallery .justified-gallery > img {
     -webkit-transition: -webkit-transform 0.15s ease 0s;
     -moz-transition: -moz-transform 0.15s ease 0s;
     -o-transition: -o-transform 0.15s ease 0s;
@@ -67,14 +67,14 @@
     height: 100%;
     width: 100%;
 }
-.demo-gallery .justified-gallery > a:hover > img {
+.demo-gallery .justified-gallery > img {
     -webkit-transform: scale3d(1.1, 1.1, 1.1);
     transform: scale3d(1.1, 1.1, 1.1);
 }
-.demo-gallery .justified-gallery > a:hover .demo-gallery-poster > img {
+.demo-gallery .justified-gallery .demo-gallery-poster > img {
     opacity: 1;
 }
-.demo-gallery .justified-gallery > a .demo-gallery-poster {
+.demo-gallery .justified-gallery > .demo-gallery-poster {
     background-color: rgba(0, 0, 0, 0.1);
     bottom: 0;
     left: 0;
@@ -85,7 +85,7 @@
     -o-transition: background-color 0.15s ease 0s;
     transition: background-color 0.15s ease 0s;
 }
-.demo-gallery .justified-gallery > a .demo-gallery-poster > img {
+.demo-gallery .justified-gallery > .demo-gallery-poster > img {
     left: 50%;
     margin-left: -10px;
     margin-top: -10px;
@@ -96,7 +96,7 @@
     -o-transition: opacity 0.3s ease 0s;
     transition: opacity 0.3s ease 0s;
 }
-.demo-gallery .justified-gallery > a:hover .demo-gallery-poster {
+.demo-gallery .justified-gallery > .demo-gallery-poster {
     background-color: rgba(0, 0, 0, 0.5);
 }
 .demo-gallery .video .demo-gallery-poster img {
@@ -106,7 +106,7 @@
     opacity: 0.8;
     width: 48px;
 }
-.demo-gallery.dark > ul > li a {
+.demo-gallery.dark > ul > li {
     border: 3px solid #04070a;
 }
 .home .demo-gallery {

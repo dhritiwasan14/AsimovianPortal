@@ -150,3 +150,12 @@ nav {
 .box {
 	margin-left: 2em;
 }
+
+
+.custom-file {
+	margin-bottom: 1em;
+}
+
+.CodeMirror-scroll {
+    max-height: 300px;
+}
