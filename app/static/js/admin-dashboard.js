@@ -26,7 +26,9 @@ function saveClass() {
 	deadline = moment(deadline).format('YYYY-MM-DD HH:mm:ss');
 	
 	$.post("/dashboard/create-class", {class_name: className, deadline: deadline, groupJSON: groupJSON}, function(data) {
-		console.log(data);
+		$("#tblGroups").html("<tr><td colspan=\"6\">You have not added any groups!</td></tr>");
+		$("#edtClassName").val("");
+		$("#edtDeadline").val("");
 		$("#btnBack").click();
 		reloadClasses();
 	});

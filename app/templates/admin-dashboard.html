@@ -133,6 +133,7 @@
 													<button class="btn btn-success float-right" id="btnViewSaveClass">Save Class</button>
 												</div>
 											</div>
+											<br>
 										</form>
 									</div>
 								</div>
@@ -149,16 +150,6 @@
 									</div>
 									<br>
 									<div class="row">
-										<!-- {% with messages = get_flashed_messages() %}
-										{% if messages %}
-											{% for message in messages %}
-												<div class="alert alert-primary alert-dismissible text-left" role="alert">
-													<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" class="float-right">&times;</span></button>
-												{{ message }}
-												</div>
-											{% endfor %}
-										{% endif %}
-										{% endwith %} -->
 										<div class="col-md-12">
 											<table class="table table-hover">
 												<colgroup>
@@ -263,6 +254,7 @@
 													<button class="btn btn-success float-right" id="btnSaveClass">Save Class</button>
 												</div>
 											</div>
+											<br>
 										</form>
 									</div>
 								</div>
@@ -271,12 +263,16 @@
 					</div>
 				</div>
 				<div id="panOrders" class="pane">
-					Account
+					<div class="row">
+						<div class="col-md-12">
+							<h1>Account Management</h1>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	{% include 'admin-modals.html' %}
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

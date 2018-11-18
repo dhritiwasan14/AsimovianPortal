@@ -16,7 +16,7 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app)
 
-mailer = Mailer(mail)
+mailer = Mailer(app, mail)
 
 import routes, models
 
