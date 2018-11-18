@@ -131,7 +131,7 @@
 									<textarea name="page" id="page" cols="30" rows="10"></textarea>
 									<div class="demo-gallery" style="height: 8em; overflow-y:scroll; background-color:lightgrey; padding-top:0.2em;">
 										<ul id="lightgallery" class="list-styled row">
-											<input type="text" name="" id="" class="hidden-url" style="display:none">
+											<textarea name="hidden-url" id="hidden-url" cols="30" rows="10" class="hidden-url" style="display:none"></textarea>
 											{% for img in images %}
 											<li class="col-xs-6 col-sm-4 col-md-2" data-responsive="img/1-375.jpg 375, img/1-480.jpg 300, img/1.jpg 500" style="background-color: white;">
 												<img class="img-responsive get-link" src="{{img}}" alt="Thumb-1">
@@ -211,16 +211,15 @@
 			});
 		});
 		$('.get-link').click(function(e) {
-			var src = $(this).attr('src');
-			console.log(src);
-			$('.hidden-url').text(src);
-			const selected =            
-				document.getSelection().rangeCount > 0        // Check if there is any content selected previously
-				? document.getSelection().getRangeAt(0)     // Store selection if found
-				: false;
-			$('.hidden-url').select();
-			document.execCommand("copy");
-			alert('Copied URL');
+			// var src = $(this).attr('src');
+			// var hidden = document.getElementsByClassName('hidden-url')[0];
+			// console.log(hidden);
+			// hidden.innerHTML = src;
+			// var range = document.createRange();
+			// range.selectNode(hidden);
+			// window.getSelection().addRange(range);
+			// document.execCommand('copy');
+			// alert('Copied URL!');
 		})
 
 	</script>
