@@ -56,7 +56,6 @@ function clickPageName(e) {
 		if(e.keyCode == 13) {
 			original.html($(this).val());
 			$(this).replaceWith(original);
-			$(this).val("");
 
 			savePage();
 
