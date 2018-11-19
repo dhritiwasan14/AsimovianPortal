@@ -81,13 +81,29 @@
 													<tr>
 														<th scope="col">#</th>
 														<th scope="col">Page Name</th>
+<<<<<<< HEAD
 														<th scope="col">Last Edited</th>
 														<th scope="col">Main Page</th>
+=======
+														<!-- <th scope="col">Last Edited</th> -->
+														<!-- <th scope="col">Views</th> -->
+>>>>>>> 26679575a4f9e4b628c68bdb7c5a874be916f3a4
 														<th scope="col"><i class="fas fa-edit"></i></th>
 														<th scope="col"><i class="fas fa-trash-alt"></i></th>
 													</tr>
 												</thead>
 												<tbody id="tblPages">
+<<<<<<< HEAD
+=======
+													{% for i in range(titles|length) %}
+													<tr>
+														<td>{{i+1}}</td>
+														<td>{{titles[i]}}</td>
+														<td><a href="#"><i class="fas fa-edit" title="Edit group's settings"></a></td>
+														<td><a href="#"><i class="fas fa-trash-alt" title="Delete group"></a></td>
+													</tr>
+													{% endfor %}
+>>>>>>> 26679575a4f9e4b628c68bdb7c5a874be916f3a4
 												</tbody>
 											</table>
 										</div>
@@ -105,7 +121,7 @@
 										<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Page</h1>
 									</div>
 								</div>
-								<div class="box" style="margin-top: 2vh; height: 75%; overflow-y: auto;">
+								<div class="box" style="margin-top: 2vh; height: 70%; overflow-y: auto;">
 									<!-- Editor -->
 									<!-- Upload Image -->
 									<div class="custom-file" style="padding-left:0px;">
@@ -137,6 +153,8 @@
 										</ul>
 									</div>
 								</div>
+								<br>
+								<button class="save-page btn btn-primary float-right">Save</button>
 							</div>
 						</div>
 					</div>
@@ -167,7 +185,7 @@
 				});
 			});
 			$("#btnBack").click(function(e) {
-				$("#pagPageCreate, #pagPageList").animate({
+				$("#pagPageList, #pagPageCreate").animate({
 					'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
 				});
 			});
@@ -209,7 +227,25 @@
 
 		$(".get-link").click(function(e) {
 			alert("")
-		})
+		});
+
+		$('.save-page').click(function(e) {
+			e.preventDefault();
+			var formData = new FormData();
+			// need to get it from every CodeMirror-line
+			var content = '';
+			$('.CodeMirror-line').each(function(data) {
+				content+=$(this).text() + '\n';
+			})
+			
+			formData.append('content', content);
+			formData.append('title', $('#txtPageName').text());
+
+			var request = new XMLHttpRequest();
+			request.open("POST", "/add-post/{{username}}");
+			request.send(formData);
+			alert('Page has been saved.');
+		});
 	</script>
 </body>
 </html>

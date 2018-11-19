@@ -8,11 +8,14 @@ import hashlib
 import json
 import random
 import string
+import datetime
 from werkzeug import secure_filename
 
 BASE_DIR =  os.getcwd()
 UPLOADS_DIR = BASE_DIR + '/app/uploads/'
+POSTS_FOLDER = BASE_DIR + '/app/posts/'
 app.config['UPLOADS_FOLDER'] = UPLOADS_DIR
+app.config['POSTS_FOLDER'] = POSTS_FOLDER
 
 @app.route('/')
 def index():
@@ -218,13 +221,22 @@ def get_class(id):
 def student_dashboard(username):
     # add post, redirect to 
     # click existing post, 
-    group = Group.query.get(int(current_user.get_id()))
+    # need to send each post for the user.
+    group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
+    print(group, int(current_user.get_id()))
+    pages = Page.query.filter_by(group=group.id)).all()
     if group.is_admin() or group.username == username:
-        images = []
+        images, titles = [], []
         list_files = os.listdir(UPLOADS_DIR+username)
         for entry in list_files:
             images.append('/uploads/'+username+'/'+entry)
-        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images)
+        list_files = os.listdir(POSTS_FOLDER+username)
+        for entry in sorted(list_files):
+            f = open(POSTS_FOLDER+username+'/'+entry)
+            titles.append(f.readline().strip('#').strip())
+            f.close()
+        print(titles, images)
+        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images, titles=titles)
     else:
         return redirect('/login')
 
@@ -257,3 +269,24 @@ def get_img_link(username, filename):
 @app.route('/wiki', methods=['GET'])
 def wiki():
     return render_template('wiki.html')
+
+@app.route('/add-post/<username>', methods=["POST"])
+@login_required
+def add_post(username):
+    title = request.form.get('title')
+    post = request.form.get('content')
+    group = db.session.query(Group).filter_by(username=username).first()
+    page = Page(datetime.datetime.now(), group.id)
+    db.session.add(page)
+    db.session.commit()
+    if not os.path.isdir(POSTS_FOLDER+username):
+        os.mkdir(POSTS_FOLDER+username)
+    f = open(POSTS_FOLDER+username+'/'+str(page.id)+'.txt', 'w')
+    f.write('# '+title+'\n'+ post)
+    f.close()
+    return 'Successfully created Page.'
+
+# @app.route('/set-to-main/<username>/<fileid>', methods=['POST'])
+# @login_required
+# def set_to_main(username, fileid):
+    
