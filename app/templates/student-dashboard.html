@@ -108,7 +108,7 @@
 										<h1 id="txtPageName" style="line-height: 55px; height: 55px; vertical-align: middle;">New Page</h1>
 									</div>
 								</div>
-								<div class="box" style="margin-top: 2vh; height: 75%; overflow-y: auto;">
+								<div class="box" style="margin-top: 2vh; height: 70%; overflow-y: auto;">
 									<!-- Editor -->
 									<!-- Upload Image -->
 									<div class="custom-file" style="padding-left:0px;">
@@ -140,6 +140,8 @@
 										</ul>
 									</div>
 								</div>
+								<br>
+								<button class="save-page btn btn-primary float-right">Save</button>
 							</div>
 						</div>
 					</div>
@@ -212,7 +214,25 @@
 
 		$(".get-link").click(function(e) {
 			alert("")
-		})
+		});
+
+		$('.save-page').click(function(e) {
+			e.preventDefault();
+			var formData = new FormData();
+			// need to get it from every CodeMirror-line
+			var content = '';
+			$('.CodeMirror-line').each(function(data) {
+				content+=$(this).text() + '\n';
+			})
+			
+			formData.append('content', content);
+			formData.append('title', $('#txtPageName').text());
+
+			var request = new XMLHttpRequest();
+			request.open("POST", "/add-post/{{username}}");
+			request.send(formData);
+			alert('Page has been saved.');
+		});
 	</script>
 </body>
 </html>

@@ -11,6 +11,7 @@ class Group(db.Model, UserMixin):
     authenticated = db.Column(db.Boolean, default=False)
     members = db.Column(db.String(100), nullable=True)
     class_id = db.Column(db.Integer, db.ForeignKey('class.id'), nullable=False)
+    # topic = db.Column(db.Integer, nullable=True, default=0)
 
     def __init__(self, username, password_hash, class_id, members, admin = 0):
         self.username = username
@@ -43,7 +44,12 @@ class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     last_update = db.Column(db.DateTime, nullable=True)
     group = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=True)
+    main = db.Column(db.Boolean, default=False)
 
+    def __init__(self, last_update, group, main=False):
+        self.last_update = last_update
+        self.group = group
+        self.main = main
 
 class Class(db.Model):
     id = db.Column(db.Integer, primary_key=True)
