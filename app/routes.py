@@ -334,7 +334,6 @@ def wiki(username):
         response = dict()
         response['success'] = True
         response['pages'] = pages
-        print(pages)
         return render_template('wiki.html', response=response, username=username)
     return redirect('/login')
 
