@@ -88,17 +88,5 @@ $(document).ready(function() {
 		select($(this).attr('id').substring(3));
 	});
 
-	$("#btnAddPage").click(function(e) {
-		$("#pagPageList, #pagPageEdit").animate({
-			'left': '-=500vh'
-		});
-	});
-	$("#btnBack").click(function(e) {
-		savePage();
-		$("#pagPageList, #pagPageEdit").animate({
-			'left': '+=500vh'
-		});
-	});
-
 	$("#txtPageName").click(clickPageName);
 });

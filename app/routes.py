@@ -1,4 +1,5 @@
 import csv, os, base64
+import uuid 
 
 from . import db, app, bcrypt, mail, mailer
 from models import Group, Page, Class
@@ -227,6 +228,8 @@ def student_dashboard(username):
     pages = Page.query.filter_by(group_id=group.id).all()
     if group.is_admin() or group.username == username:
         images, titles = [], []
+        if not os.path.isdir(UPLOADS_DIR+username):
+            os.mkdir(UPLOADS_DIR+username)
         list_files = os.listdir(UPLOADS_DIR+username)
         for entry in list_files:
             images.append('/uploads/'+username+'/'+entry)
@@ -267,13 +270,13 @@ def get_pages(username):
 @login_required
 def upload_image(username):
     file_image = request.files['image']
-    file_name = file_image.filename
+    file_name = uuid.uuid4().hex[:6].upper()
     # check if dir exists else create
     
     if not os.path.isdir(UPLOADS_DIR+username):
         os.mkdir(UPLOADS_DIR+username)
-    file_image.save(UPLOADS_DIR+username+'/'+file_name)
-    return 'yELLO'
+    file_image.save(UPLOADS_DIR+username+'/'+file_name+'.'+file_image.filename.split('.')[-1])
+    return '/uploads/'+username+'/'+file_name+'.'+file_image.filename.split('.')[-1]
 
 
 @app.route('/uploads/<username>/<filename>', methods=['GET'])

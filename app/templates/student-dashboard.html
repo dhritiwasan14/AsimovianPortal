@@ -15,6 +15,7 @@
 	<link href="/static/css/editor-styles.css" rel="stylesheet">
 	<link href="/static/css/main.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+	<script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css">
 </head>
 <body>
@@ -130,8 +131,8 @@
 										<ul id="lightgallery" class="list-styled row">
 											<textarea name="hidden-url" id="hidden-url" cols="30" rows="10" class="hidden-url" style="display:none"></textarea>
 											{% for img in images %}
-											<li class="col-xs-6 col-sm-4 col-md-2" data-responsive="img/1-375.jpg 375, img/1-480.jpg 300, img/1.jpg 500" style="background-color: white;">
-												<img class="img-responsive get-link" src="{{img}}" data-clipboard-text="![](http://localhost:5000{{img}})" alt="Thumb-1">
+											<li class="col-xs-6 col-sm-4 col-md-2" style="background-color: white;">
+												<img class="img-responsive get-link" src="{{img}}" data-clipboard-text="localhost:5000{{img}}" alt="Thumb-1">
 											</li>
 											{% endfor %}
 										</ul>
@@ -155,6 +156,24 @@
 	<script src="/static/js/lightgallery.js"></script>
 	<script type="text/javascript">
 		new ClipboardJS('.get-link');
+		function set_new_image(image_url) {
+			console.log(image_url);
+			$('#lightgallery').append('<li class="col-xs-6 col-sm-4 col-md-2" style="background-color: white;"><img class="img-responsive get-link" src="'+image_url+'" data-clipboard-text="localhost:5000'+image_url+'" alt="Thumb-1"></li>')
+			
+			lightGallery(document.getElementById('demo-gallery'), {
+				thumbnail: true,
+				cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
+				closable:false,
+				enableTouch: false,
+				enableDrag: false,
+				loop:true,
+				speed:1500
+			});
+			new ClipboardJS('.get-link');
+			$(".get-link").click(function(e) {
+				alert("URL has been copied. ")
+			});
+		}
 		$(document).ready(function(){
 
 			// load images
@@ -173,7 +192,18 @@
 					'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
 				});
 			});
-			var simplemde = new SimpleMDE({element: document.getElementById('page')});
+			var converter = new showdown.Converter();
+			var simplemde = new SimpleMDE(
+				{
+					element: document.getElementById('page'),
+					previewRender: function (plaintext, preview) {
+						setTimeout(function() {
+							preview.innerHTML = converter.makeHtml(plaintext);
+						}, 250);
+						return 'Loading...';
+					}
+				}
+			);
 			lightGallery(document.getElementById('demo-gallery'), {
 				thumbnail: true,
 				cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
@@ -203,14 +233,15 @@
 					processData: false,
 					type: 'POST',
 					success: function(data){
-						alert(data);
+						console.log('doth i enter here');
+						set_new_image(data);
 					}
 				});	
 			});
 		});
 
 		$(".get-link").click(function(e) {
-			alert("")
+			alert("URL has been copied. ")
 		});
 
 		$('.save-page').click(function(e) {
