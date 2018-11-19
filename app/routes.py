@@ -1,7 +1,7 @@
 import csv, os, base64
 import uuid 
 
-from . import db, app, bcrypt, mail, mailer
+from . import db, app, bcrypt, mailer
 from models import Group, Page, Class
 from flask import render_template, request, redirect, flash, jsonify, send_from_directory
 from flask_login import login_user, login_required, logout_user, current_user
@@ -80,7 +80,7 @@ def admin_dashboard():
     group = Group.query.get(int(current_user.get_id()))
     if group.is_admin():
         classes = Class.query.all()
-        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin"), classes=classes)
+        return render_template('admin-dashboard.html', username = "admin", usernameHash = hashlib.md5("admin").hexdigest(), classes=classes)
     else:
         return redirect('/student-dashboard/' + group.username)
 
@@ -235,7 +235,7 @@ def student_dashboard(username):
         list_files = os.listdir(UPLOADS_DIR+username)
         for entry in list_files:
             images.append('/uploads/'+username+'/'+entry)
-        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images)
+        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username).hexdigest(), images=images)
     else:
         return redirect('/login')
 
@@ -338,9 +338,9 @@ def wiki(username):
         return render_template('wiki.html', response=response, username=username)
     return redirect('/login')
 
-@app.route('/student-dashboard/<username>/add-post', methods=["POST"])
+@app.route('/student-dashboard/<username>/add-page', methods=["POST"])
 @login_required
-def add_post(username):
+def add_page(username):
     title = request.form.get('title')
     post = request.form.get('content')
     group = db.session.query(Group).filter_by(username=username).first()
@@ -359,9 +359,9 @@ def add_post(username):
 
     return jsonify(response)
 
-@app.route('/student-dashboard/<username>/delete-post', methods=["POST"])
+@app.route('/student-dashboard/<username>/delete-page', methods=["POST"])
 @login_required
-def delete_post(username):
+def delete_page(username):
     id = request.form.get('id')
     Page.query.filter_by(id=int(id)).delete()
     db.session.commit()

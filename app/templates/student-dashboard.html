@@ -52,18 +52,22 @@
 				</div>
 			</div>
 			<!-- Begin main detail view -->
-			<div class="col-md-10 col-xs-8" style="background: #F6F6F8;">
+			<div class="col-md-10 col-xs-8 scrollable-pane" style="background: #F6F6F8;">
 				<div id="panDashboard" class="pane">
 					<div class="sliding-content container-fluid" style="width: 200%; position: relative;">
 						<div class="row">
 							<div id="pagPageList" style="position: relative;" class="d-inline-block col-md-6">
 								<div class="container-fluid" style="width: 100%; margin-top: 2vh;">
 									<div class="row">
-										<div class="col-md-10">
+										<div class="col-md-8">
 											<h1>Pages</h1>
 										</div>
-										<div class="col-md-2">
-											<button class="btn btn-primary float-right h4" id="btnAddPage" style="height:100%; vertical-align:center; line-height : 100%;"><i class="fas fa-plus"></i> Add Page</button>
+										<div class="col-md-4">
+											<div class="float-right" style="height: 100%">
+												<button class="btn btn-success h4" id="btnViewWiki" style="height:100%; vertical-align:center; line-height: 100%;"><i class="fas fa-eye"></i> View Wiki</button>
+												&nbsp;&nbsp;
+												<button class="btn btn-primary h4" id="btnAddPage" style="height:100%; vertical-align:center; line-height: 100%;"><i class="fas fa-plus"></i> Add Page</button>						
+											</div>
 										</div>
 									</div>
 									<br>
@@ -148,7 +152,7 @@
 				<div id="panOrders" class="pane scrollable">
 					<div class="row">
 						<div class="col-md-12">
-							<h1>Account Management</h1>
+							<h1 style="margin: 2vh 4vh;">Account Management</h1>
 						</div>
 					</div>
 				</div>

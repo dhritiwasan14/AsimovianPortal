@@ -145,6 +145,17 @@ $(document).ready(function() {
 		$("#pagPageList, #pagPageCreate").animate({
 			'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
 		});
+		$("#txtPageName").html("New Page");
+		editableText.val("New Page");
+		simplemde.value("");
+	});
+
+	$("#btnViewWiki").click(function(e) {
+		var pathArray = window.location.href.split('/');
+		window.open(
+			"/wiki/" + pathArray[pathArray.length - 1] + "/",
+			'_blank'
+		);
 	});
 
 	$(".side-nav-item").click(function(e) {
@@ -158,28 +169,31 @@ $(document).ready(function() {
 
 		var id = $("#hdnDeletePage").val();
 		$(this).html('<i class=\"fas fa-sync-alt spinning\"></i> Deleting').attr('disabled', true);
-		$.post(window.location.href + "/delete-post", {id: id}, function(response) {
+		$.post(window.location.href + "/delete-page", {id: id}, function(response) {
 			if(response.success) {
 				$("#btnConfirmDeletePage").html("Delete Page").removeAttr('disabled');
 				$("#mdlDeletePage").modal('hide');
 				loadPages();
 			}
 		});
-	})
+	});
+
 	lightGallery(document.getElementById('demo-gallery'), {
 		thumbnail: true,
-		cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
-		closable:false,
+		cssEasing: 'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
+		closable: false,
 		enableTouch: false,
 		enableDrag: false,
-		loop:true,
-		speed:1500
+		loop: true,
+		speed: 1500
 	});
+
 	$('input').change(function(e) {
 		var filename = this.files[0].name;
 		console.log(filename);
 		$('.custom-file-label').text(filename);
-	})
+	});
+
 	$('.upload-image').click(function(e) {
 		e.preventDefault();
 
@@ -201,28 +215,16 @@ $(document).ready(function() {
 	});
 
 	$('#btnSave').click(function(e) {
-			e.preventDefault();
-			var formData = new FormData();
-			// need to get it from every CodeMirror-line
-			var content = simplemde.value();
-			
-			formData.append('content', content);
-			formData.append('title', editableText.val());
-
-	// $('#btnSave').click(function(e) {
-	// 	e.preventDefault();
-	// 	var formData = new FormData();
-	// 	// need to get it from every CodeMirror-line
-	// 	var content = '';
-	// 	$('.CodeMirror-line').each(function(data) {
-	// 		content+=$(this).text() + '\n';
-	// 	})
+		e.preventDefault();
+		var formData = new FormData();
+		// need to get it from every CodeMirror-line
+		var content = simplemde.value();
 		
-	// 	formData.append('content', content);
-	// 	formData.append('title', editableText.val());
+		formData.append('content', content);
+		formData.append('title', editableText.val());
 
 		$(this).html("<i class=\"fas fa-sync-alt spinning\"></i> Saving").attr('disabled', true);
-		$.ajax({url: window.location.href + "/add-post",
+		$.ajax({url: window.location.href + "/add-page",
 	        data: formData,
 	        contentType: false,
 	        processData: false,
