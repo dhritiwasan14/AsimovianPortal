@@ -1,4 +1,6 @@
 var selected = 'Dashboard';
+var mainPage = 0;
+
 new ClipboardJS('.get-link');
 var simplemde = new SimpleMDE(
 	{
@@ -97,7 +99,8 @@ function loadPages() {
 				pageHTML += "<td style=\"vertical-align: middle\">" + response.pages[i].name + "</td>";
 				pageHTML += "<td style=\"vertical-align: middle\">" + response.pages[i].last_update + "</td>";
 				if(response.pages[i].is_main) {
-					pageHTML += "<td><span class=\"text-success\">Main Page</span></td>";
+					pageHTML += "<td><strong class=\"text-success\" style=\"margin-left: 8%\">Main Page</strong></td>";
+					mainPage = response.pages[i].id;
 				}
 				else {
 					pageHTML += "<td><button class=\"btn btn-success main-button\" id=\"" + response.pages[i].id + "\">Set As Main</button></td>";
@@ -124,7 +127,18 @@ function loadPages() {
 
 				$("#hdnDeletePage").val($(this).attr('id'));
 				$("#mdlDeletePage").modal();
-			})
+			});
+
+			$(".main-button").click(function(e) {
+				e.preventDefault();
+				var id = $(this).attr('id');
+
+				$.post(window.location.href + "/swap-main", {first: mainPage, second: id}, function(response) {
+					if(response.success) {
+						loadPages();
+					}
+				});
+			});
 		}
 	});
 }
