@@ -1,4 +1,6 @@
 var selected = 'Dashboard';
+new ClipboardJS('.get-link');
+var simplemde = new SimpleMDE({element: document.getElementById('page')});
 		// Function that loads the appropriate event when selected and updates the UI to reflect it
 function select(pane) {
 	$("#nav" + selected).removeClass('selected'); // "De-select" the row of the previously selected event
@@ -87,6 +89,13 @@ function loadPages() {
 				var id = $(this).attr('id');
 				loadPage(id);
 			});
+
+			$(".delete-page").click(function(e) {
+				e.preventDefault();
+
+				$("#hdnDeletePage").val($(this).attr('id'));
+				$("#mdlDeletePage").modal();
+			})
 		}
 	});
 }
@@ -114,6 +123,19 @@ $(document).ready(function() {
 
 	$("#txtPageName").click(clickPageName);
 
+	$("#btnConfirmDeletePage").click(function(e) {
+		e.preventDefault();
+
+		var id = $("#hdnDeletePage").val();
+		$(this).html('<i class=\"fas fa-sync-alt spinning\"></i> Deleting').attr('disabled', true);
+		$.post(window.location.href + "/delete-post", {id: id}, function(response) {
+			if(response.success) {
+				$("#btnConfirmDeletePage").html("Delete Page").removeAttr('disabled');
+				$("#mdlDeletePage").modal('hide');
+				loadPages();
+			}
+		});
+	})
 	lightGallery(document.getElementById('demo-gallery'), {
 				thumbnail: true,
 				cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
