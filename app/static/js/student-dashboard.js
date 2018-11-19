@@ -152,7 +152,10 @@ $(document).ready(function() {
 
 	$("#btnViewWiki").click(function(e) {
 		var pathArray = window.location.href.split('/');
-		window.location.href = "/wiki/" + pathArray[pathArray.length - 1] + "/";
+		window.open(
+			"/wiki/" + pathArray[pathArray.length - 1] + "/",
+			'_blank'
+		);
 	});
 
 	$(".side-nav-item").click(function(e) {
