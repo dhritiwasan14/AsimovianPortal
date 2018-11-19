@@ -145,8 +145,15 @@ $(document).ready(function() {
 		$("#pagPageList, #pagPageCreate").animate({
 			'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
 		});
+		$("#txtPageName").html("New Page");
+		editableText.val("New Page");
+		simplemde.value("");
 	});
 
+	$("#btnViewWiki").click(function(e) {
+		var pathArray = window.location.href.split('/');
+		window.location.href = "/wiki/" + pathArray[pathArray.length - 1] + "/";
+	});
 	$(".side-nav-item").click(function(e) {
 		select($(this).attr('id').substring(3));
 	});
@@ -208,18 +215,6 @@ $(document).ready(function() {
 			
 			formData.append('content', content);
 			formData.append('title', editableText.val());
-
-	// $('#btnSave').click(function(e) {
-	// 	e.preventDefault();
-	// 	var formData = new FormData();
-	// 	// need to get it from every CodeMirror-line
-	// 	var content = '';
-	// 	$('.CodeMirror-line').each(function(data) {
-	// 		content+=$(this).text() + '\n';
-	// 	})
-		
-	// 	formData.append('content', content);
-	// 	formData.append('title', editableText.val());
 
 		$(this).html("<i class=\"fas fa-sync-alt spinning\"></i> Saving").attr('disabled', true);
 		$.ajax({url: window.location.href + "/add-post",

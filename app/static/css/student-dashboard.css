@@ -35,6 +35,12 @@ html, body {
 	overflow-x: hidden;
 	height: 100vh;
 }
+
+.scrollable-pane {
+	overflow: hidden;
+	height: 100vh;
+}
+
 .center {
 	margin: auto;
 }
@@ -87,6 +93,7 @@ html, body {
 	z-index: 2;
 	margin: 2vh;
 	height: 89.5%;
+	overflow: hidden;
 	box-shadow: 2px 6px 10px #CCCCCC;
 }
 
