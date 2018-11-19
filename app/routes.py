@@ -284,6 +284,25 @@ def get_page(username, id):
 
     return jsonify(response)
 
+@app.route('/student-dashboard/<username>/swap-main', methods=['POST'])
+@login_required
+def swap_main(username):
+    first = int(request.form.get('first'))
+    second = int(request.form.get('second'))
+
+    if first != 0:
+        firstPage = Page.query.get(first)
+        firstPage.is_main = 0
+
+    secondPage = Page.query.get(second)
+    secondPage.is_main = 1
+
+    db.session.commit()
+
+    response = dict()
+    response['success'] = True
+
+    return jsonify(response)
 # @app.route('/student-editor/<username>/<page>', methods=['GET', 'POST'])
 # @login_required
 # def student_editor(username, page):
