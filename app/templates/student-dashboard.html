@@ -81,16 +81,21 @@
 													<tr>
 														<th scope="col">#</th>
 														<th scope="col">Page Name</th>
-														<th scope="col">Last Edited</th>
-														<th scope="col">Views</th>
+														<!-- <th scope="col">Last Edited</th> -->
+														<!-- <th scope="col">Views</th> -->
 														<th scope="col"><i class="fas fa-edit"></i></th>
 														<th scope="col"><i class="fas fa-trash-alt"></i></th>
 													</tr>
 												</thead>
 												<tbody id="tblPages">
+													{% for i in range(titles|length) %}
 													<tr>
-														<td colspan="6">You have not added any pages!</td>
+														<td>{{i+1}}</td>
+														<td>{{titles[i]}}</td>
+														<td><a href="#"><i class="fas fa-edit" title="Edit group's settings"></a></td>
+														<td><a href="#"><i class="fas fa-trash-alt" title="Delete group"></a></td>
 													</tr>
+													{% endfor %}
 												</tbody>
 											</table>
 										</div>
@@ -172,7 +177,7 @@
 				});
 			});
 			$("#btnBack").click(function(e) {
-				$("#pagPageCreate, #pagPageList").animate({
+				$("#pagPageList, #pagPageCreate").animate({
 					'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
 				});
 			});

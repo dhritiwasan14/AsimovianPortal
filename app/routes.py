@@ -222,8 +222,9 @@ def student_dashboard(username):
     # add post, redirect to 
     # click existing post, 
     # need to send each post for the user.
-    group = Group.query.get(int(current_user.get_id()))
-    pages = Page.query.filter_by(group=current_user.get_id())
+    group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
+    print(group, int(current_user.get_id()))
+    pages = Page.query.filter_by(group=group.id)).all()
     if group.is_admin() or group.username == username:
         images, titles = [], []
         list_files = os.listdir(UPLOADS_DIR+username)
@@ -232,9 +233,10 @@ def student_dashboard(username):
         list_files = os.listdir(POSTS_FOLDER+username)
         for entry in sorted(list_files):
             f = open(POSTS_FOLDER+username+'/'+entry)
-            titles.append(f.readline().strip())
+            titles.append(f.readline().strip('#').strip())
             f.close()
-        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images, pages=pages, titles=titles)
+        print(titles, images)
+        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images, titles=titles)
     else:
         return redirect('/login')
 
