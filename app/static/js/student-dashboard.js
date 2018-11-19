@@ -153,7 +153,7 @@ $(document).ready(function() {
 	$("#btnViewWiki").click(function(e) {
 		var pathArray = window.location.href.split('/');
 		window.open(
-			"/wiki/" + pathArray[pathArray.length - 1] + "/",
+			"/wiki/" + pathArray[pathArray.length - 1],
 			'_blank'
 		);
 	});
