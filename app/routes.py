@@ -259,6 +259,29 @@ def get_pages(username):
     response['pages'] = pages
     
     return jsonify(response)
+
+@app.route('/student-dashboard/<username>/get-page/<id>', methods=['GET'])
+@login_required
+def get_page(username, id):
+    pageResult = Page.query.get(int(id))
+
+    page = dict()
+    page['name'] = pageResult.name
+
+    pageFile = open(POSTS_FOLDER + username + "/" + str(pageResult.id) + ".txt", "r")
+    pageContent = ""
+
+    for l in pageFile.readlines():
+        pageContent += l
+
+    page['content'] = pageContent
+
+    response = dict()
+    response['success'] = True
+    response['page'] = page
+
+    return jsonify(response)
+
 # @app.route('/student-editor/<username>/<page>', methods=['GET', 'POST'])
 # @login_required
 # def student_editor(username, page):
@@ -289,7 +312,7 @@ def get_img_link(username, filename):
 def wiki():
     return render_template('wiki.html')
 
-@app.route('/add-post/<username>', methods=["POST"])
+@app.route('/student-dashboard/<username>/add-post', methods=["POST"])
 @login_required
 def add_post(username):
     title = request.form.get('title')
@@ -300,10 +323,29 @@ def add_post(username):
     db.session.commit()
     if not os.path.isdir(POSTS_FOLDER+username):
         os.mkdir(POSTS_FOLDER+username)
+
     f = open(POSTS_FOLDER+username+'/'+str(page.id)+'.txt', 'w')
-    f.write('# '+title+'\n'+ post)
+    f.write(post)
     f.close()
-    return 'Successfully created Page.'
+
+    response = dict()
+    response['success'] = True
+
+    return jsonify(response)
+
+@app.route('/student-dashboard/<username>/delete-post', methods=["POST"])
+@login_required
+def delete_post(username):
+    id = request.form.get('id')
+    Page.query.filter_by(id=int(id)).delete()
+    db.session.commit()
+    if os.path.exists(POSTS_FOLDER + username + "/" + id + ".txt"):
+        os.remove(POSTS_FOLDER + username + "/" + id + ".txt")
+
+    response = dict()
+    response['success'] = True
+
+    return jsonify(response)
 
 # @app.route('/set-to-main/<username>/<fileid>', methods=['POST'])
 # @login_required

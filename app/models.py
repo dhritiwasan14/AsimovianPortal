@@ -47,9 +47,9 @@ class Page(db.Model):
     is_main = db.Column(db.Boolean, default=False)
     name = db.Column(db.String(100), nullable=False)
 
-    def __init__(self, last_update, group, main=False):
+    def __init__(self, last_update, group, name, main=False):
         self.last_update = last_update
-        self.group = group
+        self.group_id = group
         self.main = main
         self.name = name
 
