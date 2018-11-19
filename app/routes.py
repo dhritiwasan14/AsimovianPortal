@@ -315,7 +315,7 @@ def add_post(username):
     title = request.form.get('title')
     post = request.form.get('content')
     group = db.session.query(Group).filter_by(username=username).first()
-    page = Page(datetime.datetime.now(), group.id)
+    page = Page(datetime.datetime.now(), group.id, name=title)
     db.session.add(page)
     db.session.commit()
     if not os.path.isdir(POSTS_FOLDER+username):
