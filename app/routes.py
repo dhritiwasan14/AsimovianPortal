@@ -252,3 +252,8 @@ def upload_image(username):
 @login_required
 def get_img_link(username, filename):
     return send_from_directory(app.config['UPLOADS_FOLDER']+username+'/', filename, as_attachment=True)
+
+
+@app.route('/wiki', methods=['GET'])
+def wiki():
+    return render_template('wiki.html')

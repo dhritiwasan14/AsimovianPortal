@@ -135,7 +135,7 @@ nav {
 	color: #666666;
 	text-align: center;
 	padding: 0;
-	margin: ;
+	/* margin: ; */
 	line-height: 55px;
 	font-size: 38px;
 	font-family: 'Roboto';
@@ -156,6 +156,7 @@ nav {
 	margin-bottom: 1em;
 }
 
-.CodeMirror-scroll {
+.CodeMirror.cm-s-paper.CodeMirror-wrap:not(.CodeMirror-fullscreen)> div.CodeMirror-scroll{
     max-height: 300px;
 }
+
