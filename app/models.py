@@ -42,7 +42,7 @@ class Group(db.Model, UserMixin):
 class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     last_update = db.Column(db.DateTime, nullable=True)
-    group = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=True)
 
 
 class Class(db.Model):

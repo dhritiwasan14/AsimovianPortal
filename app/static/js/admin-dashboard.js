@@ -74,9 +74,16 @@ function reloadClasses() {
 	$.get('/dashboard/get-classes', function(response) {
 		var classHTML = "";
 
+		var indexOffset = 0;
+
 		for(var i = 0; i < response.classes.length; i++) {
+			if(response.classes[i].id == 0) {
+				indexOffset = 1;
+				continue;
+			}
+
 			classHTML += "<tr>";
-			classHTML += "<td>" + (i + 1) + "</td>";
+			classHTML += "<td>" + (i + 1 - indexOffset) + "</td>";
 			classHTML += "<td>" + response.classes[i].name + "</td>";
 			classHTML += "<td>" + response.classes[i].groupcount + "</td>";
 			classHTML += "<td class=\"date-cell\">" + response.classes[i].deadline + "</td>";
