@@ -312,9 +312,9 @@ def get_img_link(username, filename):
 def wiki():
     return render_template('wiki.html')
 
-@app.route('/student-dashboard/<username>/add-post', methods=["POST"])
+@app.route('/student-dashboard/<username>/add-page', methods=["POST"])
 @login_required
-def add_post(username):
+def add_page(username):
     title = request.form.get('title')
     post = request.form.get('content')
     group = db.session.query(Group).filter_by(username=username).first()
@@ -333,9 +333,9 @@ def add_post(username):
 
     return jsonify(response)
 
-@app.route('/student-dashboard/<username>/delete-post', methods=["POST"])
+@app.route('/student-dashboard/<username>/delete-page', methods=["POST"])
 @login_required
-def delete_post(username):
+def delete_page(username):
     id = request.form.get('id')
     Page.query.filter_by(id=int(id)).delete()
     db.session.commit()
