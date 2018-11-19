@@ -1,6 +1,16 @@
 var selected = 'Dashboard';
 new ClipboardJS('.get-link');
-var simplemde = new SimpleMDE({element: document.getElementById('page')});
+var simplemde = new SimpleMDE(
+	{
+		element: document.getElementById('page'),
+		previewRender: function (plaintext, preview) {
+			setTimeout(function() {
+				preview.innerHTML = converter.makeHtml(plaintext);
+			}, 250);
+			return 'Loading...';
+		}
+	}
+);
 		// Function that loads the appropriate event when selected and updates the UI to reflect it
 function select(pane) {
 	$("#nav" + selected).removeClass('selected'); // "De-select" the row of the previously selected event
@@ -14,6 +24,26 @@ function loadPane(paneId) {
 	$(".pane").hide();
 	$("#" + paneId).show();
 }
+
+
+function set_new_image(image_url) {
+	$('#lightgallery').append('<li class="col-xs-6 col-sm-4 col-md-2" style="background-color: white;"><img class="img-responsive get-link" src="'+image_url+'" data-clipboard-text="localhost:5000'+image_url+'" alt="Thumb-1"></li>')
+	
+	lightGallery(document.getElementById('demo-gallery'), {
+		thumbnail: true,
+		cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
+		closable:false,
+		enableTouch: false,
+		enableDrag: false,
+		loop:true,
+		speed:1500
+	});
+	new ClipboardJS('.get-link');
+	$(".get-link").click(function(e) {
+		alert("URL has been copied. ")
+	});
+}
+
 
 var editableText = $("<input type=\"text\" name=\"edtPageName\" id=\"txtPageName\" class=\"form-control\"  style=\"line-height: 55px; height: 55px; vertical-align: middle; font-size:24px;\">");
 
@@ -106,6 +136,17 @@ $(document).ready(function() {
 	select(selected);
 	loadPages();
 
+	$("#btnAddPage").click(function(e) {
+		$("#pagPageList, #pagPageCreate").animate({
+			'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
+		});
+	});
+	$("#btnBack").click(function(e) {
+		$("#pagPageList, #pagPageCreate").animate({
+			'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
+		});
+	});
+
 	$(".side-nav-item").click(function(e) {
 		select($(this).attr('id').substring(3));
 	});
@@ -159,21 +200,26 @@ $(document).ready(function() {
 		});	
 	});
 
-	$(".get-link").click(function(e) {
-		alert("")
-	});
-
 	$('#btnSave').click(function(e) {
-		e.preventDefault();
-		var formData = new FormData();
-		// need to get it from every CodeMirror-line
-		var content = '';
-		$('.CodeMirror-line').each(function(data) {
-			content+=$(this).text() + '\n';
-		})
+			e.preventDefault();
+			var formData = new FormData();
+			// need to get it from every CodeMirror-line
+			var content = simplemde.value();
+			
+			formData.append('content', content);
+			formData.append('title', editableText.val());
+
+	// $('#btnSave').click(function(e) {
+	// 	e.preventDefault();
+	// 	var formData = new FormData();
+	// 	// need to get it from every CodeMirror-line
+	// 	var content = '';
+	// 	$('.CodeMirror-line').each(function(data) {
+	// 		content+=$(this).text() + '\n';
+	// 	})
 		
-		formData.append('content', content);
-		formData.append('title', editableText.val());
+	// 	formData.append('content', content);
+	// 	formData.append('title', editableText.val());
 
 		$(this).html("<i class=\"fas fa-sync-alt spinning\"></i> Saving").attr('disabled', true);
 		$.ajax({url: window.location.href + "/add-post",
