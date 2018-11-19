@@ -42,9 +42,14 @@ function savePage() {
 }
 
 function loadPage(id) {
-	$.get('/student-dashboard/get-page/' + id, function(response) {
+	$.get(window.location.href  + '/get-page/' + id, function(response) {
 		if(response.success) {
-
+			$("#txtPageName").html(response.page.name);
+			simplemde.value(response.page.content);
+			alert(response.page.content);
+			$("#pagPageList, #pagPageCreate").animate({
+				'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
+			});
 		}
 	});
 }
@@ -74,6 +79,13 @@ function loadPages() {
 				pageHTML = "<tr><td colspan=6>You have not added any pages!</td></tr>"
 			}
 			$("#tblPages").html(pageHTML);
+
+			$(".edit-page").click(function(e) {
+				e.preventDefault();
+
+				var id = $(this).attr('id');
+				loadPage(id);
+			});
 		}
 	});
 }
@@ -89,14 +101,13 @@ $(document).ready(function() {
 	});
 
 	$("#btnAddPage").click(function(e) {
-		$("#pagPageList, #pagPageEdit").animate({
-			'left': '-=500vh'
+		$("#pagPageList, #pagPageCreate").animate({
+			'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
 		});
 	});
 	$("#btnBack").click(function(e) {
-		savePage();
-		$("#pagPageList, #pagPageEdit").animate({
-			'left': '+=500vh'
+		$("#pagPageList, #pagPageCreate").animate({
+			'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
 		});
 	});
 

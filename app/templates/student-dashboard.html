@@ -33,7 +33,7 @@
 		          {{ username }}
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navUser">
-		          <a class="dropdown-item" href="#">Sign Out</a>
+		          <a class="dropdown-item" href="/logout">Sign Out</a>
 		        </div>
 		      </li>
 		    </ul>
@@ -143,6 +143,13 @@
 						</div>
 					</div>
 				</div>
+				<div id="panOrders" class="pane">
+					<div class="row">
+						<div class="col-md-12">
+							<h1>Account Management</h1>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -150,11 +157,11 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-	<script src="/static/js/student-dashboard.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
 	<script src="/static/js/lightgallery.js"></script>
 	<script type="text/javascript">
 		new ClipboardJS('.get-link');
+		var simplemde = new SimpleMDE({element: document.getElementById('page')});
 		$(document).ready(function(){
 
 			// load images
@@ -163,17 +170,7 @@
 			// 	image.src = 'data:image/'
 			// }
 
-			$("#btnAddPage").click(function(e) {
-				$("#pagPageList, #pagPageCreate").animate({
-					'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
-				});
-			});
-			$("#btnBack").click(function(e) {
-				$("#pagPageList, #pagPageCreate").animate({
-					'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
-				});
-			});
-			var simplemde = new SimpleMDE({element: document.getElementById('page')});
+			
 			lightGallery(document.getElementById('demo-gallery'), {
 				thumbnail: true,
 				cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
@@ -231,5 +228,6 @@
 			alert('Page has been saved.');
 		});
 	</script>
+	<script src="/static/js/student-dashboard.js"></script>
 </body>
 </html>

@@ -256,6 +256,29 @@ def get_pages(username):
     response['pages'] = pages
     
     return jsonify(response)
+
+@app.route('/student-dashboard/<username>/get-page/<id>', methods=['GET'])
+@login_required
+def get_page(username, id):
+    pageResult = Page.query.get(int(id))
+
+    page = dict()
+    page['name'] = pageResult.name
+
+    pageFile = open(POSTS_FOLDER + username + "/" + str(pageResult.id) + ".txt", "r")
+    pageContent = ""
+
+    for l in pageFile.readlines():
+        pageContent += l
+
+    page['content'] = pageContent
+
+    response = dict()
+    response['success'] = True
+    response['page'] = page
+
+    return jsonify(response)
+
 # @app.route('/student-editor/<username>/<page>', methods=['GET', 'POST'])
 # @login_required
 # def student_editor(username, page):
