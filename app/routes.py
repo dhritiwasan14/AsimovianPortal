@@ -310,31 +310,56 @@ def get_img_link(username, filename):
     return send_from_directory(app.config['UPLOADS_FOLDER']+username+'/', filename, as_attachment=True)
 
 
-@app.route('/wiki/<username>', methods=['GET'])
+@app.route('/wiki', methods=['GET'])
 def wiki(username):
     group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
 
     
+    # if group.is_admin() or group.username == username:
+    #     pageResult = Page.query.filter_by(group_id=group.id)
+
+    #     pages = []
+
+    #     for p in pageResult:
+    #         page = dict()
+    #         page['name'] = p.name
+    #         page['id'] = p.id
+    #         page['last_update'] = p.last_update.strftime('%m/%d/%Y')
+    #         page['is_main'] = p.is_main
+    #         f = open(POSTS_FOLDER+username+'/'+str(p.id)+'.txt')
+    #         page['description'] = markdown_to_text(f.read())[:300]
+    #         f.close()
+    #         pages.append(page)
+        
+    #     response = dict()
+    #     response['success'] = True
+    #     response['pages'] = pages
+    #     return render_template('wiki.html', response=response, username=username)
+    return redirect('/login')
+
+
+
+@app.route('/wiki/<username>', methods=['GET'])
+def wiki_page(username):
+    group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
+
+    
     if group.is_admin() or group.username == username:
-        pageResult = Page.query.filter_by(group_id=group.id)
-
-        pages = []
-
-        for p in pageResult:
-            page = dict()
-            page['name'] = p.name
-            page['id'] = p.id
-            page['last_update'] = p.last_update.strftime('%m/%d/%Y')
-            page['is_main'] = p.is_main
-            f = open(POSTS_FOLDER+username+'/'+str(p.id)+'.txt')
-            page['description'] = markdown_to_text(f.read())[:300]
-            f.close()
-            pages.append(page)
+        p = Page.query.filter_by(group_id=group.id, is_main=True).first()
+        page = dict()
+        page['name'] = p.name
+        page['id'] = p.id
+        page['last_update'] = p.last_update.strftime('%m/%d/%Y')
+        f = open(POSTS_FOLDER+username+'/'+str(p.id)+'.txt')
+        page['content'] = f.read()
+        f.close()
         
         response = dict()
         response['success'] = True
-        response['pages'] = pages
-        return render_template('wiki.html', response=response, username=username)
+        response['main_page'] = page
+
+
+        return render_template('wiki-page.html', response=response, username=username)
     return redirect('/login')
 
 @app.route('/student-dashboard/<username>/add-page', methods=["POST"])
