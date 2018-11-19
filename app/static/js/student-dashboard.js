@@ -167,45 +167,40 @@ $(document).ready(function() {
 		});
 	})
 	lightGallery(document.getElementById('demo-gallery'), {
-				thumbnail: true,
-				cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
-				closable:false,
-				enableTouch: false,
-				enableDrag: false,
-				loop:true,
-				speed:1500
-			});
-			$('input').change(function(e) {
-				var filename = this.files[0].name;
-				console.log(filename);
-				$('.custom-file-label').text(filename);
-			})
-			$('.upload-image').click(function(e) {
-				e.preventDefault();
+		thumbnail: true,
+		cssEasing:'cubic-bezier(0.680, -0.550, 0.265, 1.550)',
+		closable:false,
+		enableTouch: false,
+		enableDrag: false,
+		loop:true,
+		speed:1500
+	});
+	$('input').change(function(e) {
+		var filename = this.files[0].name;
+		console.log(filename);
+		$('.custom-file-label').text(filename);
+	})
+	$('.upload-image').click(function(e) {
+		e.preventDefault();
 
-				var image = $('input')[0];
-				var file = image.files[0];
-				var formData = new FormData();
-				formData.append('image', file);
-				$.ajax({
-					url: '/upload-image/{{username}}',
-					data: formData,
-					cache: false,
-					contentType: false,
-					processData: false,
-					type: 'POST',
-					success: function(data){
-						alert(data);
-					}
-				});	
-			});
-		});
+		var image = $('input')[0];
+		var file = image.files[0];
+		var formData = new FormData();
+		formData.append('image', file);
+		$.ajax({
+			url: '/upload-image/{{username}}',
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: 'POST',
+			success: function(data){
+				alert(data);
+			}
+		});	
+	});
 
-		$(".get-link").click(function(e) {
-			alert("")
-		});
-
-		$('#btnSave').click(function(e) {
+	$('#btnSave').click(function(e) {
 			e.preventDefault();
 			var formData = new FormData();
 			// need to get it from every CodeMirror-line
@@ -214,9 +209,21 @@ $(document).ready(function() {
 			formData.append('content', content);
 			formData.append('title', editableText.val());
 
-			$(this).html("<i class=\"fas fa-sync-alt spinning\"></i> Saving").attr('disabled', true);
-			$.ajax({url: window.location.href + "/add-post",
-		        data: formData,
+	// $('#btnSave').click(function(e) {
+	// 	e.preventDefault();
+	// 	var formData = new FormData();
+	// 	// need to get it from every CodeMirror-line
+	// 	var content = '';
+	// 	$('.CodeMirror-line').each(function(data) {
+	// 		content+=$(this).text() + '\n';
+	// 	})
+		
+	// 	formData.append('content', content);
+	// 	formData.append('title', editableText.val());
+
+		$(this).html("<i class=\"fas fa-sync-alt spinning\"></i> Saving").attr('disabled', true);
+		$.ajax({url: window.location.href + "/add-post",
+	        data: formData,
 	        contentType: false,
 	        processData: false,
 	        type: 'POST',
@@ -229,5 +236,6 @@ $(document).ready(function() {
 					});
 	            }
 	        }
-        });
+	    });
+    });
 });
