@@ -309,7 +309,7 @@ def get_img_link(username, filename):
 def wiki():
     return render_template('wiki.html')
 
-@app.route('/add-post/<username>', methods=["POST"])
+@app.route('/student-dashboard/<username>/add-post', methods=["POST"])
 @login_required
 def add_post(username):
     title = request.form.get('title')
@@ -320,10 +320,15 @@ def add_post(username):
     db.session.commit()
     if not os.path.isdir(POSTS_FOLDER+username):
         os.mkdir(POSTS_FOLDER+username)
+        
     f = open(POSTS_FOLDER+username+'/'+str(page.id)+'.txt', 'w')
-    f.write('# '+title+'\n'+ post)
+    f.write(post)
     f.close()
-    return 'Successfully created Page.'
+
+    response = dict()
+    response['success'] = True
+
+    return jsonify(response)
 
 # @app.route('/set-to-main/<username>/<fileid>', methods=['POST'])
 # @login_required
