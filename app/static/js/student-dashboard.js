@@ -110,17 +110,6 @@ $(document).ready(function() {
 		select($(this).attr('id').substring(3));
 	});
 
-	$("#btnAddPage").click(function(e) {
-		$("#pagPageList, #pagPageCreate").animate({
-			'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
-		});
-	});
-	$("#btnBack").click(function(e) {
-		$("#pagPageList, #pagPageCreate").animate({
-			'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
-		});
-	});
-
 	$("#txtPageName").click(clickPageName);
 
 	$("#btnConfirmDeletePage").click(function(e) {
