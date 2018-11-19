@@ -41,11 +41,49 @@ function savePage() {
 	// Reload page list table
 }
 
+function loadPage(id) {
+	$.get('/student-dashboard/get-page/' + id, function(response) {
+		if(response.success) {
+
+		}
+	});
+}
+
+function loadPages() {
+	$.get(window.location.href  + '/get-pages', function(response) {
+		if(response.success) {
+			var pageHTML = "";
+
+			for(var i = 0; i < response.pages.length; i++) {
+				pageHTML += "<tr>";
+				pageHTML += "<td>" + (i + 1) + "</td>";
+				pageHTML += "<td>" + response.pages[i].name + "</td>";
+				pageHTML += "<td>" + response.pages[i].last_update + "</td>";
+				if(response.pages[i].is_main) {
+					pageHTML += "<td><span class=\"text-success\">Main Page</span></td>";
+				}
+				else {
+					pageHTML += "<td><button class=\"btn btn-success main-button\" id=\"" + response.pages[i].id + "\">Set As Main</button></td>";
+				}
+				pageHTML += "<td><a href=\"#\" class=\"edit-page\" id=\"" + response.pages[i].id + "\"><i class=\"fas fa-edit\"></i></a></td>";
+				pageHTML += "<td><a href=\"#\" class=\"delete-page\" id=\"" + response.pages[i].id + "\"><i class=\"fas fa-trash-alt\"></i></a></td>";
+				pageHTML += "</tr>";
+			}
+
+			if(response.pages.length == 0) {
+				pageHTML = "<tr><td colspan=6>You have not added any pages!</td></tr>"
+			}
+			$("#tblPages").html(pageHTML);
+		}
+	});
+}
+
 // Set up event listener for when the DOM is fully loaded
 $(document).ready(function() {
 	// Select the provided event, or the first event as appropriate
 	select(selected);
-	
+	loadPages();
+
 	$(".side-nav-item").click(function(e) {
 		select($(this).attr('id').substring(3));
 	});

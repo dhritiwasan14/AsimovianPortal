@@ -225,17 +225,37 @@ def student_dashboard(username):
     group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
     print(group, int(current_user.get_id()))
     pages = Page.query.filter_by(group_id=group.id).all()
-    # print(pages[0].last_update)
     if group.is_admin() or group.username == username:
         images, titles = [], []
         list_files = os.listdir(UPLOADS_DIR+username)
         for entry in list_files:
             images.append('/uploads/'+username+'/'+entry)
-        list_files = os.listdir(POSTS_FOLDER+username)
-        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images, titles=titles, pages=pages)
+        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images)
     else:
         return redirect('/login')
 
+@app.route('/student-dashboard/<username>/get-pages', methods=['GET'])
+@login_required
+def get_pages(username):
+    group = Group.query.filter_by(username=username)[0]
+    pageResult = Page.query.filter_by(group_id=group.id)
+
+    pages = []
+
+    for p in pageResult:
+        page = dict()
+        page['name'] = p.name
+        page['id'] = p.id
+        page['last_update'] = p.last_update
+        page['is_main'] = p.is_main
+
+        pages.append(page)
+
+    response = dict()
+    response['success'] = True
+    response['pages'] = pages
+    
+    return jsonify(response)
 # @app.route('/student-editor/<username>/<page>', methods=['GET', 'POST'])
 # @login_required
 # def student_editor(username, page):

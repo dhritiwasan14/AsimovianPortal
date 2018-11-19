@@ -44,14 +44,14 @@ class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     last_update = db.Column(db.DateTime, nullable=True)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=True)
-    # main = db.Column(db.Boolean, default=False)
-    # name = db.Column(db.String(100), nullable=False)
+    is_main = db.Column(db.Boolean, default=False)
+    name = db.Column(db.String(100), nullable=False)
 
     def __init__(self, last_update, group, main=False):
         self.last_update = last_update
-        self.group_id = group
-        # self.main = main
-        # self.name = name
+        self.group = group
+        self.main = main
+        self.name = name
 
 class Class(db.Model):
     id = db.Column(db.Integer, primary_key=True)

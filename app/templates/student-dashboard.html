@@ -82,21 +82,12 @@
 														<th scope="col">#</th>
 														<th scope="col">Page Name</th>
 														<th scope="col">Last Edited</th>
-														<!-- <th scope="col">Views</th> -->
+														<th scope="col">Main Page</th>
 														<th scope="col"><i class="fas fa-edit"></i></th>
 														<th scope="col"><i class="fas fa-trash-alt"></i></th>
 													</tr>
 												</thead>
 												<tbody id="tblPages">
-													{% for i in range(pages|length) %}
-													<tr>
-														<td>{{i+1}}</td>
-														<td>{{pages[i].name}}</td>
-														<td>{{pages[i].last_update}}</td>
-														<td><a href="#"><i class="fas fa-edit" title="Edit group's settings"></a></td>
-														<td><a href="#"><i class="fas fa-trash-alt" title="Delete group"></a></td>
-													</tr>
-													{% endfor %}
 												</tbody>
 											</table>
 										</div>
