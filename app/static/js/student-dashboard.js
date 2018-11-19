@@ -50,16 +50,16 @@ function loadPage(id) {
 }
 
 function loadPages() {
-	$.get('/student-dashboard/get-pages', function(response) {
+	$.get(window.location.href  + '/get-pages', function(response) {
 		if(response.success) {
 			var pageHTML = "";
 
-			for(int i = 0; i < response.pages.length; i++) {
+			for(var i = 0; i < response.pages.length; i++) {
 				pageHTML += "<tr>";
 				pageHTML += "<td>" + (i + 1) + "</td>";
 				pageHTML += "<td>" + response.pages[i].name + "</td>";
 				pageHTML += "<td>" + response.pages[i].last_update + "</td>";
-				if(response.pages[i].main) {
+				if(response.pages[i].is_main) {
 					pageHTML += "<td><span class=\"text-success\">Main Page</span></td>";
 				}
 				else {
@@ -83,7 +83,7 @@ $(document).ready(function() {
 	// Select the provided event, or the first event as appropriate
 	select(selected);
 	loadPages();
-	
+
 	$(".side-nav-item").click(function(e) {
 		select($(this).attr('id').substring(3));
 	});
