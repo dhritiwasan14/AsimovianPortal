@@ -224,19 +224,15 @@ def student_dashboard(username):
     # need to send each post for the user.
     group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
     print(group, int(current_user.get_id()))
-    pages = Page.query.filter_by(group=group.id)).all()
+    pages = Page.query.filter_by(group_id=group.id).all()
+    # print(pages[0].last_update)
     if group.is_admin() or group.username == username:
         images, titles = [], []
         list_files = os.listdir(UPLOADS_DIR+username)
         for entry in list_files:
             images.append('/uploads/'+username+'/'+entry)
         list_files = os.listdir(POSTS_FOLDER+username)
-        for entry in sorted(list_files):
-            f = open(POSTS_FOLDER+username+'/'+entry)
-            titles.append(f.readline().strip('#').strip())
-            f.close()
-        print(titles, images)
-        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images, titles=titles)
+        return render_template('student-dashboard.html', username = username, usernameHash = hashlib.md5(username), images=images, titles=titles, pages=pages)
     else:
         return redirect('/login')
 
@@ -276,7 +272,7 @@ def add_post(username):
     title = request.form.get('title')
     post = request.form.get('content')
     group = db.session.query(Group).filter_by(username=username).first()
-    page = Page(datetime.datetime.now(), group.id)
+    page = Page(datetime.datetime.now(), group.id, name=title)
     db.session.add(page)
     db.session.commit()
     if not os.path.isdir(POSTS_FOLDER+username):
