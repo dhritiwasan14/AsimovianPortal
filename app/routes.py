@@ -12,6 +12,9 @@ import string
 import datetime
 from werkzeug import secure_filename
 
+
+from helper import markdown_to_text
+
 BASE_DIR =  os.getcwd()
 UPLOADS_DIR = BASE_DIR + '/app/uploads/'
 POSTS_FOLDER = BASE_DIR + '/app/posts/'
@@ -111,7 +114,6 @@ def add_groups():
 @login_required
 def reset_group_password():
     username = request.form.get('username')
-    print(username)
     group = db.session.query(Group).filter_by(username = username)[0]
 
     group_password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
@@ -224,7 +226,7 @@ def student_dashboard(username):
     # click existing post, 
     # need to send each post for the user.
     group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
-    print(group, int(current_user.get_id()))
+
     pages = Page.query.filter_by(group_id=group.id).all()
     if group.is_admin() or group.username == username:
         images, titles = [], []
@@ -308,9 +310,33 @@ def get_img_link(username, filename):
     return send_from_directory(app.config['UPLOADS_FOLDER']+username+'/', filename, as_attachment=True)
 
 
-@app.route('/wiki', methods=['GET'])
-def wiki():
-    return render_template('wiki.html')
+@app.route('/wiki/<username>', methods=['GET'])
+def wiki(username):
+    group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
+
+    
+    if group.is_admin() or group.username == username:
+        pageResult = Page.query.filter_by(group_id=group.id)
+
+        pages = []
+
+        for p in pageResult:
+            page = dict()
+            page['name'] = p.name
+            page['id'] = p.id
+            page['last_update'] = p.last_update.strftime('%m/%d/%Y')
+            page['is_main'] = p.is_main
+            f = open(POSTS_FOLDER+username+'/'+str(p.id)+'.txt')
+            page['description'] = markdown_to_text(f.read())[:300]
+            f.close()
+            pages.append(page)
+        
+        response = dict()
+        response['success'] = True
+        response['pages'] = pages
+        print(pages)
+        return render_template('wiki.html', response=response, username=username)
+    return redirect('/login')
 
 @app.route('/student-dashboard/<username>/add-post', methods=["POST"])
 @login_required
@@ -347,7 +373,3 @@ def delete_post(username):
 
     return jsonify(response)
 
-# @app.route('/set-to-main/<username>/<fileid>', methods=['POST'])
-# @login_required
-# def set_to_main(username, fileid):
-    
