@@ -1,5 +1,8 @@
 var selected = 'Dashboard';
 var mainPage = 0;
+var editing = false;
+var editingID = 0;
+var editableText = $("<input type=\"text\" name=\"edtPageName\" id=\"txtPageName\" class=\"form-control\"  style=\"line-height: 55px; height: 55px; vertical-align: middle; font-size:24px;\">");
 
 new ClipboardJS('.get-link');
 var simplemde = new SimpleMDE(
@@ -46,9 +49,6 @@ function set_new_image(image_url) {
 	});
 }
 
-
-var editableText = $("<input type=\"text\" name=\"edtPageName\" id=\"txtPageName\" class=\"form-control\"  style=\"line-height: 55px; height: 55px; vertical-align: middle; font-size:24px;\">");
-
 function clickPageName(e) {
 	var original = $(this);
 	editableText.val($(this).html())
@@ -81,6 +81,9 @@ function loadPage(id) {
 			$("#txtPageName").html(response.page.name);
 			editableText.val(response.page.name);
 			simplemde.value(response.page.content);
+			editing = true;
+			editingID = id;
+
 			$("#pagPageList, #pagPageCreate").animate({
 				'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
 			});
@@ -150,6 +153,7 @@ $(document).ready(function() {
 	loadPages();
 
 	$("#btnAddPage").click(function(e) {
+		editing = false;
 		$("#pagPageList, #pagPageCreate").animate({
 			'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
 		});
@@ -237,7 +241,15 @@ $(document).ready(function() {
 		formData.append('title', editableText.val());
 
 		$(this).html("<i class=\"fas fa-sync-alt spinning\"></i> Saving").attr('disabled', true);
-		$.ajax({url: window.location.href + "/add-page",
+		var postURL = "";
+		if(editing) {
+			postURL = window.location.href + "/edit-page";
+			formData.append('id', editingID);
+		}
+		else {
+			postURL = window.location.href + "/add-page";
+		}
+		$.ajax({url: postURL,
 	        data: formData,
 	        contentType: false,
 	        processData: false,

@@ -419,3 +419,25 @@ def delete_page(username):
 
     return jsonify(response)
 
+@app.route('/student-dashboard/<username>/edit-page', methods=["POST"])
+@login_required
+def edit_page(username):
+    title = request.form.get('title')
+    post = request.form.get('content')
+    id = request.form.get('id')
+
+    page = Page.query.get(int(id))
+    page.name = title
+    db.session.commit()
+
+    if not os.path.isdir(POSTS_FOLDER+username):
+        os.mkdir(POSTS_FOLDER+username)
+
+    f = open(POSTS_FOLDER+username+'/'+str(page.id)+'.txt', 'w')
+    f.write(post)
+    f.close()
+
+    response = dict()
+    response['success'] = True
+
+    return jsonify(response)
