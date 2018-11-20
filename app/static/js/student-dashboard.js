@@ -100,7 +100,7 @@ function loadPages() {
 				pageHTML += "<tr>";
 				pageHTML += "<td style=\"vertical-align: middle\">" + (i + 1) + "</td>";
 				pageHTML += "<td style=\"vertical-align: middle\">" + response.pages[i].name + "</td>";
-				pageHTML += "<td style=\"vertical-align: middle\">" + response.pages[i].last_update + "</td>";
+				pageHTML += "<td class=\"date-cell\" style=\"vertical-align: middle\">" + response.pages[i].last_update + "</td>";
 				if(response.pages[i].is_main) {
 					pageHTML += "<td><strong class=\"text-success\" style=\"margin-left: 8%\">Main Page</strong></td>";
 					mainPage = response.pages[i].id;
@@ -117,6 +117,10 @@ function loadPages() {
 				pageHTML = "<tr><td colspan=6>You have not added any pages!</td></tr>"
 			}
 			$("#tblPages").html(pageHTML);
+
+			$(".date-cell").each(function() {
+				$(this).html(moment($(this).html()).format('MMMM Do YYYY, h:mm:ss A'));
+			});
 
 			$(".edit-page").click(function(e) {
 				e.preventDefault();

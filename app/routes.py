@@ -252,7 +252,7 @@ def get_pages(username):
         page = dict()
         page['name'] = p.name
         page['id'] = p.id
-        page['last_update'] = p.last_update
+        page['last_update'] = str(p.last_update)
         page['is_main'] = p.is_main
 
         pages.append(page)
@@ -428,6 +428,7 @@ def edit_page(username):
 
     page = Page.query.get(int(id))
     page.name = title
+    page.last_update = datetime.datetime.now()
     db.session.commit()
 
     if not os.path.isdir(POSTS_FOLDER+username):
