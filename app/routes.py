@@ -429,6 +429,11 @@ def add_page(username):
     post = request.form.get('content')
     group = db.session.query(Group).filter_by(username=username).first()
     page = Page(datetime.datetime.now(), group.id, name=title)
+
+    count = Page.query.filter_by(group_id=group.id).count()
+    if count == 0:
+        page.is_main = 1
+        
     db.session.add(page)
     db.session.commit()
     if not os.path.isdir(POSTS_FOLDER+username):
