@@ -262,9 +262,7 @@ $(document).ready(function() {
 	            if(response.success) {
 	            	$("#btnSave").html("Save Page").removeAttr('disabled');
 	            	loadPages();
-	            	$("#pagPageList, #pagPageCreate").animate({
-						'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
-					});
+	            	$("#btnBack").click();
 	            }
 	        }
 	    });

@@ -363,8 +363,8 @@ def wiki(username):
 def wiki_page(username):
     group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
 
-    
     if group.is_admin() or group.username == username:
+        group = Group.query.filter_by(username=username).first()
         p = Page.query.filter_by(group_id=group.id, is_main=True).first()
         page = dict()
         page['name'] = p.name
