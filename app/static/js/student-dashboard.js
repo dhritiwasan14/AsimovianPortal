@@ -171,6 +171,9 @@ $(document).ready(function() {
 		$("#txtPageName").html("New Page");
 		editableText.val("New Page");
 		simplemde.value("");
+		if(simplemde.isPreviewActive()) {
+			simplemde.togglePreview();
+		}
 	});
 
 	$("#btnViewWiki").click(function(e) {
