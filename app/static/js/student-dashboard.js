@@ -3,7 +3,7 @@ var mainPage = 0;
 var editing = false;
 var editingID = 0;
 var editableText = $("<input type=\"text\" name=\"edtPageName\" id=\"txtPageName\" class=\"form-control\"  style=\"line-height: 55px; height: 55px; vertical-align: middle; font-size:24px;\">");
-
+var converter = new showdown.Converter();
 new ClipboardJS('.get-link');
 var simplemde = new SimpleMDE(
 	{
@@ -155,7 +155,9 @@ $(document).ready(function() {
 	// Select the provided event, or the first event as appropriate
 	select(selected);
 	loadPages();
-
+	$(".get-link").click(function(e) {
+		alert("URL has been copied. ")
+	});
 	$("#btnAddPage").click(function(e) {
 		editing = false;
 		$("#pagPageList, #pagPageCreate").animate({

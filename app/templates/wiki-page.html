@@ -15,21 +15,15 @@
 		<div class="row" style="height: fit-content">
 			<div class="col-2 sidebar">
                 <img src="/static/img/wikipedia.png" alt="" class="logo-wiki">
-                <!-- <div class="title-logo" style="color:white; text-align: center;">Asimov's Journals</div> -->
-                <!-- <nav class="col-12" id="myScrollspy">
-                    <ul class="nav nav-pills nav-stacked">
-                         <li class="active"><a href="#section1">Section 1</a></li>
-                        <li><a href="#section2">Section 2</a></li>
-                        <li><a href="#section3">Section 3</a></li>
-                        <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#section41">Section 4-1</a></li>
-                            <li><a href="#section42">Section 4-2</a></li>                     
-                        </ul>
-                    </li> 
-                    </ul>
-                </nav> -->
+                <div class="other-pages nav">
+                    {% for url in response['urls'] %}
+                    <button>
+                        <a href="/wiki/{{username}}/{{url}}">
+                            {{url}}
+                        </a>
+                    </button>
+                    {%endfor%}
+                </div>
             <ul data-toc style='margin-top:2em;' class='nav-toc'></ul>
 			</div>
 			<div class="col-10">
@@ -50,7 +44,6 @@
 <script>
 
     $(document).ready(function() {
-
         // insert hr after every heading
         $('h2,h3').after('<hr>');
         $("<div class='toc col-4'></div>").insertBefore($('h2')[0]);

@@ -12,6 +12,7 @@ import string
 import datetime
 import mistune
 from werkzeug import secure_filename
+from HTMLParser import HTMLParser
 
 
 from helper import markdown_to_text
@@ -360,7 +361,7 @@ def wiki(username):
 
 
 @app.route('/wiki/<username>', methods=['GET'])
-def wiki_page(username):
+def wiki_main(username):
     try:
         group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
 
@@ -375,15 +376,51 @@ def wiki_page(username):
             markdown = mistune.Markdown(renderer=renderer)
             page['content'] = markdown(f.read())
             f.close()
-            
+            urls = []
+            other_pages = Page.query.filter_by(group_id=group.id, is_main=False)
+            for other_page in other_pages:
+                urls.append(other_page.name)
             response = dict()
             response['success'] = True
             response['main_page'] = page
-
+            response['urls'] = urls
 
             return render_template('wiki-page.html', response=response, username=username)
     except Exception:    
         return redirect('/login')
+
+
+@app.route('/wiki/<username>/<filename>', methods=['GET'])
+def wiki_page(username, filename):
+    try:
+        group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
+
+        if group.is_admin() or group.username == username:
+            parser = HTMLParser()
+            html_decoded_string = parser.unescape(filename)
+            p = Page.query.filter_by(group_id=group.id, name=html_decoded_string).first()
+            page = dict()
+            page['name'] = p.name
+            page['id'] = p.id
+            page['last_update'] = p.last_update.strftime('%m/%d/%Y')
+            f = open(POSTS_FOLDER+username+'/'+str(p.id)+'.txt')
+            renderer = mistune.Renderer(escape=False)
+            markdown = mistune.Markdown(renderer=renderer)
+            page['content'] = markdown(f.read())
+            f.close()
+            urls = []
+            other_pages = Page.query.filter_by(group_id=group.id, is_main=False)
+            for other_page in other_pages:
+                urls.append(other_page.name)
+            response = dict()
+            response['success'] = True
+            response['main_page'] = page
+            response['urls'] = urls
+
+            return render_template('wiki-page.html', response=response, username=username)
+    except Exception:    
+        return redirect('/login')
+
 
 @app.route('/student-dashboard/<username>/add-page', methods=["POST"])
 @login_required
