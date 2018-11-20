@@ -10,6 +10,7 @@ import json
 import random
 import string
 import datetime
+import mistune
 from werkzeug import secure_filename
 
 
@@ -370,7 +371,9 @@ def wiki_page(username):
         page['id'] = p.id
         page['last_update'] = p.last_update.strftime('%m/%d/%Y')
         f = open(POSTS_FOLDER+username+'/'+str(p.id)+'.txt')
-        page['content'] = f.read()
+        renderer = mistune.Renderer(escape=False)
+        markdown = mistune.Markdown(renderer=renderer)
+        page['content'] = markdown(f.read())
         f.close()
         
         response = dict()

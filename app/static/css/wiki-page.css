@@ -1,0 +1,10 @@
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+.sidebar {
+	height: 100%;
+	background: url('/static/img/stars.png');
+	border-right: 1px solid #999999
+}

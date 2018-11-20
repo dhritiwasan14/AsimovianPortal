@@ -4,3 +4,4 @@ pymysql
 flask_login
 flask_bcrypt
 flask_mail
+mistune
