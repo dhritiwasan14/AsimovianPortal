@@ -47,7 +47,7 @@ function viewClass(id) {
         	groupHTML += "<td>" + response.class.groups[i].username + "</td>";
         	groupHTML += "<td>" + response.class.groups[i].members + "</td>";
         	groupHTML += "<td><button class=\"reset-group-password btn btn-danger\" id=\"" + response.class.groups[i].username + "\">Reset Password</button></td>"
-        	groupHTML += "<td><a href=\"/" + response.class.groups[i].username + "\" target=\"_blank\"><i class=\"fas fa-eye\" title=\"View group's wiki\"></i></a></td>";
+        	groupHTML += "<td><a href=\"/wiki/" + response.class.groups[i].username + "\" target=\"_blank\"><i class=\"fas fa-eye\" title=\"View group's wiki\"></i></a></td>";
         	groupHTML += "<td><a href=\"/student-dashboard/" + response.class.groups[i].username +"\" target=\"_blank\"><i class=\"fas fa-columns\" title=\"View group's dashboard\"></i></a></td>";
         	groupHTML += "<td><a href=\"#\"><i class=\"fas fa-edit\" title=\"Edit group's settings\"></a></td>";
         	groupHTML += "<td><a href=\"#\"><i class=\"fas fa-trash-alt\" title=\"Delete group\"></a></td>";

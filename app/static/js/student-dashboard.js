@@ -1,5 +1,8 @@
 var selected = 'Dashboard';
 var mainPage = 0;
+var editing = false;
+var editingID = 0;
+var editableText = $("<input type=\"text\" name=\"edtPageName\" id=\"txtPageName\" class=\"form-control\"  style=\"line-height: 55px; height: 55px; vertical-align: middle; font-size:24px;\">");
 
 new ClipboardJS('.get-link');
 var simplemde = new SimpleMDE(
@@ -46,9 +49,6 @@ function set_new_image(image_url) {
 	});
 }
 
-
-var editableText = $("<input type=\"text\" name=\"edtPageName\" id=\"txtPageName\" class=\"form-control\"  style=\"line-height: 55px; height: 55px; vertical-align: middle; font-size:24px;\">");
-
 function clickPageName(e) {
 	var original = $(this);
 	editableText.val($(this).html())
@@ -81,6 +81,9 @@ function loadPage(id) {
 			$("#txtPageName").html(response.page.name);
 			editableText.val(response.page.name);
 			simplemde.value(response.page.content);
+			editing = true;
+			editingID = id;
+
 			$("#pagPageList, #pagPageCreate").animate({
 				'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
 			});
@@ -97,7 +100,7 @@ function loadPages() {
 				pageHTML += "<tr>";
 				pageHTML += "<td style=\"vertical-align: middle\">" + (i + 1) + "</td>";
 				pageHTML += "<td style=\"vertical-align: middle\">" + response.pages[i].name + "</td>";
-				pageHTML += "<td style=\"vertical-align: middle\">" + response.pages[i].last_update + "</td>";
+				pageHTML += "<td class=\"date-cell\" style=\"vertical-align: middle\">" + response.pages[i].last_update + "</td>";
 				if(response.pages[i].is_main) {
 					pageHTML += "<td><strong class=\"text-success\" style=\"margin-left: 8%\">Main Page</strong></td>";
 					mainPage = response.pages[i].id;
@@ -114,6 +117,10 @@ function loadPages() {
 				pageHTML = "<tr><td colspan=6>You have not added any pages!</td></tr>"
 			}
 			$("#tblPages").html(pageHTML);
+
+			$(".date-cell").each(function() {
+				$(this).html(moment($(this).html()).format('MMMM Do YYYY, h:mm:ss A'));
+			});
 
 			$(".edit-page").click(function(e) {
 				e.preventDefault();
@@ -150,6 +157,7 @@ $(document).ready(function() {
 	loadPages();
 
 	$("#btnAddPage").click(function(e) {
+		editing = false;
 		$("#pagPageList, #pagPageCreate").animate({
 			'left': "-=" + ($(".sliding-content").width() * 0.51) + "px"
 		});
@@ -237,7 +245,15 @@ $(document).ready(function() {
 		formData.append('title', editableText.val());
 
 		$(this).html("<i class=\"fas fa-sync-alt spinning\"></i> Saving").attr('disabled', true);
-		$.ajax({url: window.location.href + "/add-page",
+		var postURL = "";
+		if(editing) {
+			postURL = window.location.href + "/edit-page";
+			formData.append('id', editingID);
+		}
+		else {
+			postURL = window.location.href + "/add-page";
+		}
+		$.ajax({url: postURL,
 	        data: formData,
 	        contentType: false,
 	        processData: false,
@@ -246,9 +262,7 @@ $(document).ready(function() {
 	            if(response.success) {
 	            	$("#btnSave").html("Save Page").removeAttr('disabled');
 	            	loadPages();
-	            	$("#pagPageList, #pagPageCreate").animate({
-						'left': "+=" + ($(".sliding-content").width() * 0.51) + "px"
-					});
+	            	$("#btnBack").click();
 	            }
 	        }
 	    });

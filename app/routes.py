@@ -252,7 +252,7 @@ def get_pages(username):
         page = dict()
         page['name'] = p.name
         page['id'] = p.id
-        page['last_update'] = p.last_update
+        page['last_update'] = str(p.last_update)
         page['is_main'] = p.is_main
 
         pages.append(page)
@@ -364,7 +364,6 @@ def wiki_page(username):
     try:
         group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
 
-        
         if group.is_admin() or group.username == username:
             p = Page.query.filter_by(group_id=group.id, is_main=True).first()
             page = dict()
@@ -415,6 +414,30 @@ def delete_page(username):
     db.session.commit()
     if os.path.exists(POSTS_FOLDER + username + "/" + id + ".txt"):
         os.remove(POSTS_FOLDER + username + "/" + id + ".txt")
+
+    response = dict()
+    response['success'] = True
+
+    return jsonify(response)
+
+@app.route('/student-dashboard/<username>/edit-page', methods=["POST"])
+@login_required
+def edit_page(username):
+    title = request.form.get('title')
+    post = request.form.get('content')
+    id = request.form.get('id')
+
+    page = Page.query.get(int(id))
+    page.name = title
+    page.last_update = datetime.datetime.now()
+    db.session.commit()
+
+    if not os.path.isdir(POSTS_FOLDER+username):
+        os.mkdir(POSTS_FOLDER+username)
+
+    f = open(POSTS_FOLDER+username+'/'+str(page.id)+'.txt', 'w')
+    f.write(post)
+    f.close()
 
     response = dict()
     response['success'] = True
