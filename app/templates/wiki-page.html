@@ -4,28 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="/static/css/wiki.css"> -->
+    <link rel="stylesheet" type="text/css" href="/static/css/wiki-page.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
     <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
 </head>
-<body>
-    <h3>{{response["main_page"]['name']}}</h3>
-    <div class="content">
-        {{response['main_page']['content'] | safe}}
-    </div>
+<body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+	<div class="contaner-fluid" style="height: 100%">
+		<div class="row" style="height: 100%">
+			<div class="col-2 sidebar">
+                <img src="/static/img/wikipedia.png" alt="" class="logo-wiki">
+                <!-- <div class="title-logo" style="color:white; text-align: center;">Asimov's Journals</div> -->
+                <nav class="col-12" id="myScrollspy">
+                    <ul class="nav nav-pills nav-stacked">
+                        <!-- <li class="active"><a href="#section1">Section 1</a></li>
+                        <li><a href="#section2">Section 2</a></li>
+                        <li><a href="#section3">Section 3</a></li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#section41">Section 4-1</a></li>
+                            <li><a href="#section42">Section 4-2</a></li>                     
+                        </ul>
+                    </li> -->
+                    </ul>
+                </nav>
+			</div>
+			<div class="col-10" style="overflow-y: auto;">
+				<h1>{{response['main_page']['name']}}</h1>
+				<hr>
+				{{response['main_page']['content'] | safe}}
+			</div>
+		</div>
+	</div>
+    
 </body>
+<script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
 <script>
 
     $(document).ready(function() {
-        var content_containter = document.getElementsByClassName('content')[0];
-        var converter = new showdown.Converter();
-        html = converter.makeHtml(escape("{{response['main_page']['content'] | e}}"));
-        content_containter.innerHTML = html;
+        // setting up scrollspy
+        var sections = document.getElementsByTagName('h2');
 
-    })
+        for (let i = 0; i < sections.length; i++) {
+            var parent = sections[i];
+
+            var wrapper = document.createElement('div');
+
+            // set the wrapper as child (instead of the element)
+            parent.replaceWith(wrapper);
+            // set element as child of wrapper
+            wrapper.appendChild(parent);
+            wrapper.classList.add("section"+(i+1));
+            $('.nav-stacked').append(
+                '<li><button><a href="#section'+(i+1)+'">'+sections[i].innerText+'</a></button></li>'
+            )
+        }
+        $($('.nav li')[0]).addClass('active');
+    });
 </script>
 </html>

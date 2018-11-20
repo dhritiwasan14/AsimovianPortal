@@ -134,3 +134,7 @@ a {
     color: black;
     text-decoration: underline;
 }
+
+.container-fluid {
+	font-family: 'sans-serif-custom' !important;
+}

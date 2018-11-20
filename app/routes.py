@@ -10,6 +10,7 @@ import json
 import random
 import string
 import datetime
+import mistune
 from werkzeug import secure_filename
 
 
@@ -360,26 +361,30 @@ def wiki(username):
 
 @app.route('/wiki/<username>', methods=['GET'])
 def wiki_page(username):
-    group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
+    try:
+        group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
 
-    
-    if group.is_admin() or group.username == username:
-        p = Page.query.filter_by(group_id=group.id, is_main=True).first()
-        page = dict()
-        page['name'] = p.name
-        page['id'] = p.id
-        page['last_update'] = p.last_update.strftime('%m/%d/%Y')
-        f = open(POSTS_FOLDER+username+'/'+str(p.id)+'.txt')
-        page['content'] = f.read()
-        f.close()
         
-        response = dict()
-        response['success'] = True
-        response['main_page'] = page
+        if group.is_admin() or group.username == username:
+            p = Page.query.filter_by(group_id=group.id, is_main=True).first()
+            page = dict()
+            page['name'] = p.name
+            page['id'] = p.id
+            page['last_update'] = p.last_update.strftime('%m/%d/%Y')
+            f = open(POSTS_FOLDER+username+'/'+str(p.id)+'.txt')
+            renderer = mistune.Renderer(escape=False)
+            markdown = mistune.Markdown(renderer=renderer)
+            page['content'] = markdown(f.read())
+            f.close()
+            
+            response = dict()
+            response['success'] = True
+            response['main_page'] = page
 
 
-        return render_template('wiki-page.html', response=response, username=username)
-    return redirect('/login')
+            return render_template('wiki-page.html', response=response, username=username)
+    except Exception:    
+        return redirect('/login')
 
 @app.route('/student-dashboard/<username>/add-page', methods=["POST"])
 @login_required
@@ -415,4 +420,3 @@ def delete_page(username):
     response['success'] = True
 
     return jsonify(response)
-
