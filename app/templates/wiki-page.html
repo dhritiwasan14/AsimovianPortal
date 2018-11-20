@@ -11,8 +11,8 @@
     <title>Document</title>
 </head>
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
-	<div class="contaner-fluid" style="height: 100%">
-		<div class="row" style="height: 100%">
+	<div class="container-fluid" style="height: 100%">
+		<div class="row" style="height: fit-content">
 			<div class="col-2 sidebar">
                 <img src="/static/img/wikipedia.png" alt="" class="logo-wiki">
                 <!-- <div class="title-logo" style="color:white; text-align: center;">Asimov's Journals</div> -->
@@ -30,7 +30,7 @@
                     </li> 
                     </ul>
                 </nav> -->
-                <ul data-toc></ul>
+            <ul data-toc style='margin-top:2em;' class='nav-toc'></ul>
 			</div>
 			<div class="col-10">
 				<h1>{{response['main_page']['name']}}</h1>
@@ -51,7 +51,12 @@
 
     $(document).ready(function() {
 
-
+        // insert hr after every heading
+        $('h2,h3').after('<hr>');
+        $("<div class='toc col-4'></div>").insertBefore($('h2')[0]);
+        // insert toc into .toc, then delete it from sidebar
+        $('.toc').append($('.nav-toc'));
+        $('sidebar .nav-toc').remove();
     });
 </script>
 </html>
