@@ -385,7 +385,7 @@ def wiki_main(username):
             response['main_page'] = page
             response['urls'] = urls
 
-            return render_template('wiki-page.html', response=response, username=username)
+            return render_template('wiki-page.html', response=response, username=username, main_url=p.name)
     except Exception:    
         return redirect('/login')
 
@@ -412,12 +412,13 @@ def wiki_page(username, filename):
             other_pages = Page.query.filter_by(group_id=group.id, is_main=False)
             for other_page in other_pages:
                 urls.append(other_page.name)
+            main_page = Page.query.filter_by(group_id=group.id, is_main=True).first()
             response = dict()
             response['success'] = True
             response['main_page'] = page
             response['urls'] = urls
 
-            return render_template('wiki-page.html', response=response, username=username)
+            return render_template('wiki-page.html', response=response, username=username, main_url=main_page.name)
     except Exception:    
         return redirect('/login')
 

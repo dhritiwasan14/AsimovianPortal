@@ -16,6 +16,11 @@
 			<div class="col-2 sidebar">
                 <img src="/static/img/wikipedia.png" alt="" class="logo-wiki" style="margin-top: 2vh">
                 <div class="other-pages nav">
+                    <button>
+                        <a href="/wiki/{{username}}/{{main_url}}">
+                            {{main_url}}
+                        </a>
+                    </button>
                     {% for url in response['urls'] %}
                     <button>
                         <a href="/wiki/{{username}}/{{url}}">
@@ -28,8 +33,10 @@
 			</div>
 			<div class="col-10">
 				<h1>{{response['main_page']['name']}}</h1>
-				<hr class="content">
-				{{response['main_page']['content'] | safe}}
+                <hr class="content">
+                <div class="body">
+                    {{response['main_page']['content'] | safe}}
+                </div>
 			</div>
 		</div>
 	</div>
@@ -44,12 +51,17 @@
 <script>
 
     $(document).ready(function() {
+        $('.nav-toc').toc({content: "div.content", headings: "h2,h3"});
         // insert hr after every heading
         $('h2,h3').after('<hr>');
         $("<div class='toc col-4'></div>").insertBefore($('h2')[0]);
         // insert toc into .toc, then delete it from sidebar
         $('.toc').append($('.nav-toc'));
         $('sidebar .nav-toc').remove();
+        $(".body a").each(function(e) {
+            $(this).attr('href', '/wiki/{{username}}'+$(this).attr('href'));
+        });
+
     });
 </script>
 </html>
