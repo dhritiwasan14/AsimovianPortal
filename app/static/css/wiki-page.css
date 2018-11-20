@@ -9,12 +9,29 @@
 
 html, body {
 	height: 100%;
-	font-family: 'sans-serif-custom';
+	//font-family: 'sans-serif-custom';
+}
+
+
+.title {
+    font-family: 'Poiret One';
+    color: white;
+    font-size: 2em;
+    letter-spacing: 7px;
+    display: inline-block;
+    background: black;
+    z-index: 999 !important;
+    width: 100%;s
 }
 
 .sidebar {
-	background: url('/static/img/stars.png');
-	border-right: 1px solid #999999;
+	background-image: url('/static/img/stars.png');
+	background-repeat: repeat-y;
+	height: 100%;
+	position:fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
 }
 
 nav {
@@ -52,8 +69,12 @@ div.col-sm-9 div {
 }
 
 .toc a{
-	color: black !important;
+	//color: black !important;
 }
+
+.toc ol { counter-reset: item }
+.toc li { display: block }
+.toc li:before { content: counters(item, ".") " "; counter-increment: item }
 
 .nav button:hover {
 	background-color: rgba(255,255,255,0.5);
@@ -67,14 +88,15 @@ div.col-sm-9 div {
 }
 
 .toc {
-	border-color: black;
-	border: 2px;
-	padding: 1em;
+	border-color: #a2a9b1 !important;
+	border: 1px;
+	//padding: 1em;
 	border-style: solid;
 	margin-bottom: 1em;
+	background-color: #f8f9fa;
 }
 .nav-toc {
-	padding-right: 0.2em;
+	//padding-right: 0.2em;
 }
 
 .row {
