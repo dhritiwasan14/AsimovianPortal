@@ -90,15 +90,26 @@ div.col-sm-9 div {
 .toc {
 	border-color: #a2a9b1 !important;
 	border: 1px;
-	//padding: 1em;
+	padding: 1em;
 	border-style: solid;
 	margin-bottom: 1em;
 	background-color: #f8f9fa;
-}
-.nav-toc {
-	//padding-right: 0.2em;
+	width: fit-content;
 }
 
 .row {
 	height: inherit !important;
+}
+
+.other-pages {
+	color: white;
+}
+
+.nav-link {
+	color: white;
+}
+
+.nav-list {
+	list-style-type: none;
+	padding: 0;
 }

@@ -362,7 +362,7 @@ def wiki(username):
 
 @app.route('/wiki/<username>', methods=['GET'])
 def wiki_main(username):
-    try:
+    #try:
         group = Group.query.get(int(current_user.get_id())) # because of this, might not be possible to redirect admin
 
         if group.is_admin() or group.username == username:
@@ -386,8 +386,8 @@ def wiki_main(username):
             response['urls'] = urls
 
             return render_template('wiki-page.html', response=response, username=username, main_url=p.name)
-    except Exception:    
-        return redirect('/login')
+    #except Exception:    
+        #return redirect('/login')
 
 
 @app.route('/wiki/<username>/<filename>', methods=['GET'])

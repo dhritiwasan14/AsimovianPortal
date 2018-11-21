@@ -19,8 +19,15 @@
 		<div class="row" style="height: fit-content">
 			<div class="col-2 sidebar">
                 <img src="/static/img/wikipedia.png" alt="" class="logo-wiki" style="margin-top: 2vh">
+                <br>
                 <div class="other-pages nav">
-                    <button>
+                	<strong>Other pages in this wiki</strong>
+                	<ul class="nav-list">
+                		{% for url in response['urls'] %}
+                		<li><a href="/wiki/{{username}}/{{url}}" class="nav-link">{{url}}</a></li>
+                		{% endfor %}
+                	</ul>
+                    <!-- <button>
                         <a href="/wiki/{{username}}/{{main_url}}">
                             {{main_url}}
                         </a>
@@ -31,7 +38,7 @@
                             {{url}}
                         </a>
                     </button>
-                    {%endfor%}
+                    {%endfor%} -->
                 </div>
             <ol data-toc data-toc-headings="h2,h3" class="nav-toc"></ol>
 			</div>
@@ -57,14 +64,17 @@
     $(document).ready(function() {
         // insert hr after every heading
         $('h2,h3').after('<hr>');
-        $("<div class='toc col-4'><p class=\"text-center\" style=\"margin-top: 1vh;\"><strong>Contents</strong></p></div>").insertBefore($('h2')[0]);
+        $("<div class='toc'><p class=\"text-center\" style=\"margin-top: 1vh;\"><strong>Contents</strong></p></div>").insertBefore($('h2')[0]);
         // insert toc into .toc, then delete it from sidebar
-        $('.toc').append($('.nav-toc'));
         //$($('.nav-toc').html()).appendTo(".toc");
         $('sidebar .nav-toc').remove();
         $(".body a").each(function(e) {
-            $(this).attr('href', '/wiki/{{username}}'+$(this).attr('href'));
+        	var link = $(this).attr('href');
+        	if(link.indexOf("http:") == -1 && link.indexOf("https:") == -1) {
+        		$(this).attr('href', '/wiki/{{username}}/'+link);
+        	}
         });
+        $('.toc').append($('.nav-toc'));
     });
 </script>
 </html>
